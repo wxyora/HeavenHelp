@@ -32,7 +32,7 @@ import cn.smssdk.SMSSDK;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
 
-    EditText id_mobile_number,id_gotted_code;
+    EditText id_mobile_number,id_gotted_code,id_password;
     Button id_send_code,id_submit_info;
     EventHandler eventHandler;
     RequestQueue requestQueue;
@@ -45,6 +45,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         id_mobile_number = (EditText) findViewById(R.id.id_mobile_number);
         id_gotted_code = (EditText) findViewById(R.id.id_gotted_code);
+        id_password = (EditText) findViewById(R.id.id_password);
         id_send_code = (Button) findViewById(R.id.id_send_code);
         id_submit_info = (Button) findViewById(R.id.id_submit_info);
 
@@ -115,6 +116,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                                 Map<String, String> map = new HashMap<String,String>();
                                 map.put("mobile",id_mobile_number.getText().toString());
+                                map.put("password",id_password.getText().toString());
                                 return  map;
                             }
                         };

@@ -22,6 +22,16 @@
                 android:hint="请输入手机号"
                 android:id="@+id/id_mobile_number"
                 />
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入密码"
+                android:id="@+id/id_password"
+                android:password="true"
+                />
+
+
+
 
             <Button
                 android:layout_width="match_parent"
