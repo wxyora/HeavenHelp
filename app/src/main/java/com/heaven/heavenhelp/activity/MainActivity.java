@@ -1,4 +1,4 @@
-package com.heaven.heavenhelp;
+package com.heaven.heavenhelp.activity;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -13,6 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.heaven.heavenhelp.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -23,6 +35,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     EditText id_mobile_number,id_gotted_code;
     Button id_send_code,id_submit_info;
     EventHandler eventHandler;
+    RequestQueue requestQueue;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         id_send_code.setOnClickListener(this);
         id_submit_info.setOnClickListener(this);
         SMSSDK.initSDK(this, "918205743ae2", "1ce19530b625e514ad9b8073e1117a5e");
+        requestQueue = Volley.newRequestQueue(this);
 
         eventHandler = new EventHandler() {
             /**
@@ -81,6 +97,27 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {// 提交验证码成功
                         Toast.makeText(getApplicationContext(), "提交验证码成功",
                                 Toast.LENGTH_SHORT).show();
+
+                        new StringRequest(Request.Method.POST, "", new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+
+                            }
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+
+                                Map<String, String> map = new HashMap<String,String>();
+                                map.put("mobile",id_mobile_number.getText().toString());
+                                return  map;
+                            }
+                        };
                     } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         Toast.makeText(getApplicationContext(), "验证码已经发送",
                                 Toast.LENGTH_SHORT).show();
