@@ -180,7 +180,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                             if ("0".equals(result)) {
                                 SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
                             }else {
-                                Toast.makeText(RegisterActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "该用户已存在,可以直接登陆", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

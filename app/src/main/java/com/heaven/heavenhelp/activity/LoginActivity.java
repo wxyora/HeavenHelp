@@ -16,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 
 import org.json.JSONException;
@@ -34,6 +35,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
         bt_register_info = (Button) findViewById(R.id.bt_register_info);
         id_login_mobile = (EditText) findViewById(R.id.id_login_mobile);
@@ -76,9 +78,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             JSONObject jsonObject = new JSONObject(s);
                             String result = jsonObject.getString("result");
                             if(result.equals("0")){
-                                Toast.makeText(LoginActivity.this, "∏√”√ªß≤ª¥Ê‘⁄£¨«Î◊¢≤·", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "ËØ•Áî®Êà∑‰∏çÂ≠òÂú®ÔºåËØ∑Ê≥®ÂÜå", Toast.LENGTH_SHORT).show();
                             }else if(result.equals("3")){
-                                Toast.makeText(LoginActivity.this, "«Î∫À∂‘”√ªß√˚∫Õ√‹¬Î", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "ËØ∑Ê†∏ÂØπÁî®Êà∑ÂêçÂíåÂØÜÁ†Å", Toast.LENGTH_SHORT).show();
                             }else if(result.equals("1")){
                                 Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
                                 startActivity(intent);
@@ -92,7 +94,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        System.out.print("error");
                     }
                 }) {
                     @Override
@@ -103,6 +105,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                         return map;
                     }
                 };
+
                 requestQueue.add(sr);
                 break;
             case R.id.bt_register_info:
