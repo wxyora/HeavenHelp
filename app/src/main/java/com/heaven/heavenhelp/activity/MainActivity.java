@@ -177,7 +177,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         try {
                             JSONObject json = new JSONObject(s);
                             String result = json.getString("result");
-                            if ("1".equals(result)) {
+                            if ("0".equals(result)) {
                                 SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
                             }else {
                                 Toast.makeText(MainActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
@@ -195,7 +195,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> map = new HashMap<String, String>();
-                        map.put("password", id_password.getText().toString());
+                        map.put("mobile", id_mobile_number.getText().toString());
                         return map;
                     }
                 };
