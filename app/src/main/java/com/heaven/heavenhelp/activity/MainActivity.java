@@ -22,6 +22,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,11 +35,10 @@ import cn.smssdk.SMSSDK;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
 
-    EditText id_mobile_number,id_gotted_code,id_password;
-    Button id_send_code,id_submit_info;
+    EditText id_mobile_number, id_gotted_code, id_password;
+    Button id_send_code, id_submit_info;
     EventHandler eventHandler;
     RequestQueue requestQueue;
-
 
 
     @Override
@@ -94,32 +96,44 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Object data = msg.obj;
                 Log.e("event", "event=" + event);
                 if (result == SMSSDK.RESULT_COMPLETE) {
-                    // 短信注册成功后，返回MainActivity,然后提示新好友
-                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {// 提交验证码成功
-                        Toast.makeText(getApplicationContext(), "提交验证码成功",
-                                Toast.LENGTH_SHORT).show();
 
-                        new StringRequest(Request.Method.POST, "", new Response.Listener<String>() {
+                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                        StringRequest sr = new StringRequest(Request.Method.POST, "http://waylonsir.imwork.net/celechem/register.action", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
+                                try {
+                                    JSONObject json = new JSONObject(s);
+                                    String result = json.getString("result");
+                                    if ("1".equals(result)) {
+                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    } else if ("0".equals(result)) {
+                                        Toast.makeText(MainActivity.this, "系统异常", Toast.LENGTH_SHORT).show();
+                                    } else if ("2".equals(result)) {
+                                        Toast.makeText(MainActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
+                                    }
+                                    ;
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-
+                                Toast.makeText(MainActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                             }
-                        }){
+                        }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
-
-                                Map<String, String> map = new HashMap<String,String>();
-                                map.put("mobile",id_mobile_number.getText().toString());
-                                map.put("password",id_password.getText().toString());
-                                return  map;
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put("mobile", id_mobile_number.getText().toString());
+                                map.put("password", id_password.getText().toString());
+                                return map;
                             }
                         };
+                        sr.setTag("www");
+                        requestQueue.add(sr);
+
                     } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         Toast.makeText(getApplicationContext(), "验证码已经发送",
                                 Toast.LENGTH_SHORT).show();
@@ -157,11 +171,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.id_send_code:
-                id_send_code.setText("正在发送......");
-                SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
-                id_send_code.setText("再次发送");
+                StringRequest findUserByMobile = new StringRequest(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            JSONObject json = new JSONObject(s);
+                            String result = json.getString("result");
+                            if ("1".equals(result)) {
+                                SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
+                            }else {
+                                Toast.makeText(MainActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(MainActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("password", id_password.getText().toString());
+                        return map;
+                    }
+                };
+                requestQueue.add(findUserByMobile);
                 break;
-
             case R.id.id_submit_info:
                 // judgePhoneNums(phoneNums);
                 SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code
@@ -177,6 +216,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // requestQueue.cancelAll("www");
         SMSSDK.unregisterEventHandler(eventHandler);
     }
 }
