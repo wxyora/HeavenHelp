@@ -32,7 +32,7 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+public class RegisterActivity extends ActionBarActivity implements View.OnClickListener {
 
 
     EditText id_mobile_number, id_gotted_code, id_password;
@@ -105,12 +105,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                                     JSONObject json = new JSONObject(s);
                                     String result = json.getString("result");
                                     if ("1".equals(result)) {
-                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                        Intent intent = new Intent(RegisterActivity.this, LoginSuccessActivity.class);
                                         startActivity(intent);
                                     } else if ("0".equals(result)) {
-                                        Toast.makeText(MainActivity.this, "系统异常", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterActivity.this, "系统异常", Toast.LENGTH_SHORT).show();
                                     } else if ("2".equals(result)) {
-                                        Toast.makeText(MainActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
                                     }
                                     ;
                                 } catch (JSONException e) {
@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-                                Toast.makeText(MainActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                             }
                         }) {
                             @Override
@@ -180,7 +180,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                             if ("0".equals(result)) {
                                 SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
                             }else {
-                                Toast.makeText(MainActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "该用户已存在", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -189,7 +189,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(MainActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
