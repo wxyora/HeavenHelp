@@ -75,4 +75,13 @@
 
         android:id="@+id/ddd" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码？"
+        android:id="@+id/textView"
+        android:textSize="16dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="12dp" />
+
 </LinearLayout>
