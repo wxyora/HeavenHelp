@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.util.StringRequestUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,7 +100,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                 if (result == SMSSDK.RESULT_COMPLETE) {
 
                     if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        StringRequest sr = new StringRequest(Request.Method.POST, "http://waylonsir.imwork.net/celechem/register.action", new Response.Listener<String>() {
+                        StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/register.action", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
                                 try {
@@ -172,7 +173,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.id_send_code:
-                StringRequest findUserByMobile = new StringRequest(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
+                StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         try {

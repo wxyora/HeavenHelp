@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HeavenHelp</string>
+    <string name="app_name">性价比</string>
 
     <string name="hello_world">您已经注册成功并登陆，只是我们什么内容都没有，不好意思。</string>
     <string name="action_settings">Settings</string>

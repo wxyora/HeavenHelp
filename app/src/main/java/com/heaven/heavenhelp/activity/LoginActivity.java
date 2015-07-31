@@ -1,8 +1,9 @@
 package com.heaven.heavenhelp.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -37,6 +37,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.hide();
         requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
         bt_register_info = (Button) findViewById(R.id.bt_register_info);

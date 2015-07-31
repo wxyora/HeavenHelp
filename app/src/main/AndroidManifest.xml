@@ -32,7 +32,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.RegisterActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            >
         </activity>
         <activity
             android:name=".activity.LoginSuccessActivity"
