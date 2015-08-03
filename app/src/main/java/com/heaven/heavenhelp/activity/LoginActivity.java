@@ -85,6 +85,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                     toastUtils.showToastShort("密码不能为空");
                 } else{
                     if(ValidationUtil.isMobileNO(id_login_mobile.getText().toString())){
+                        toastUtils.showToastShort("请输入正确的手机号");
+                    }else{
                         StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
@@ -120,8 +122,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             }
                         };
                         requestQueue.add(sr);
-                    }else{
-                        toastUtils.showToastShort("请输入正确的手机号");
                     }
                 }
                 break;

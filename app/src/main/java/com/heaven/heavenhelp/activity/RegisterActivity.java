@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.util.StringRequestUtil;
+import com.heaven.heavenhelp.util.ToastUtils;
+import com.heaven.heavenhelp.util.ValidationUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +44,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
     Button id_send_code, id_submit_info;
     EventHandler eventHandler;
     RequestQueue requestQueue;
+    ToastUtils toastUtils;
 
 
     @Override
@@ -52,7 +56,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
         id_password = (EditText) findViewById(R.id.id_password);
         id_send_code = (Button) findViewById(R.id.id_send_code);
         id_submit_info = (Button) findViewById(R.id.id_submit_info);
-
+        toastUtils = new ToastUtils(this);
         id_send_code.setOnClickListener(this);
         id_submit_info.setOnClickListener(this);
         SMSSDK.initSDK(this, "918205743ae2", "1ce19530b625e514ad9b8073e1117a5e");
@@ -173,42 +177,48 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.id_send_code:
-                StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        try {
-                            JSONObject json = new JSONObject(s);
-                            String result = json.getString("result");
-                            if ("0".equals(result)) {
-                                SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
-                            }else {
-                                Toast.makeText(RegisterActivity.this, "该用户已存在,可以直接登陆", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(id_mobile_number.getText().toString())){
+                    toastUtils.showToastShort("手机号码不能为空");
+                }else if(ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
+                    toastUtils.showToastShort("请输入正确的手机号");
+                }else{
+                    StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            try {
+                                JSONObject json = new JSONObject(s);
+                                String result = json.getString("result");
+                                if ("0".equals(result)) {
+                                    SMSSDK.getVerificationCode("86", id_mobile_number.getText().toString().trim());
+                                }else {
+                                    Toast.makeText(RegisterActivity.this, "该用户已存在,可以直接登陆", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(RegisterActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("mobile", id_mobile_number.getText().toString());
-                        return map;
-                    }
-                };
-                requestQueue.add(findUserByMobile);
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(RegisterActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put("mobile", id_mobile_number.getText().toString());
+                            return map;
+                        }
+                    };
+                    requestQueue.add(findUserByMobile);
+                }
                 break;
             case R.id.id_submit_info:
                 // judgePhoneNums(phoneNums);
                 SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code
                         .getText().toString());
                 // 验证通过之后，将smssdk注册代码注销
-                //SMSSDK.unregisterEventHandler(eventHandler);
+                SMSSDK.unregisterEventHandler(eventHandler);
                 break;
             default:
                 break;
@@ -218,7 +228,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // requestQueue.cancelAll("www");
+        requestQueue.cancelAll("www");
         SMSSDK.unregisterEventHandler(eventHandler);
     }
 }
