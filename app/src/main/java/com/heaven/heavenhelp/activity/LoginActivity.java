@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.util.StringRequestUtil;
+import com.heaven.heavenhelp.util.ToastUtils;
+import com.heaven.heavenhelp.util.ValidationUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +35,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     Button bt_login_submit, bt_register_info;
     RequestQueue requestQueue;
     EditText id_login_mobile, id_login_password;
+    ToastUtils toastUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         ActionBar supportActionBar = getSupportActionBar();
         supportActionBar.hide();
+        toastUtils = new ToastUtils(this);
         requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
         bt_register_info = (Button) findViewById(R.id.bt_register_info);
@@ -74,42 +79,51 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_login_submit:
+                if(TextUtils.isEmpty(id_login_mobile.getText().toString())){
+                    toastUtils.showToastShort("手机号码不能为空");
+                } else if(TextUtils.isEmpty(id_login_password.getText().toString())){
+                    toastUtils.showToastShort("密码不能为空");
+                } else{
+                    if(ValidationUtil.isMobileNO(id_login_mobile.getText().toString())){
+                        StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    String result = jsonObject.getString("result");
+                                    if(result.equals("0")){
+                                        Toast.makeText(LoginActivity.this, "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
+                                    }else if(result.equals("3")){
+                                        Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
+                                    }else if(result.equals("1")){
+                                        Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
+                                        startActivity(intent);
+                                    }else{
 
-                StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String result = jsonObject.getString("result");
-                            if(result.equals("0")){
-                                Toast.makeText(LoginActivity.this, "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
-                            }else if(result.equals("3")){
-                                Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
-                            }else if(result.equals("1")){
-                                Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
-                                startActivity(intent);
-                            }else{
-
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                System.out.print("error");
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put("mobile", id_login_mobile.getText().toString().trim());
+                                map.put("password", id_login_password.getText().toString().trim());
+                                return map;
+                            }
+                        };
+                        requestQueue.add(sr);
+                    }else{
+                        toastUtils.showToastShort("请输入正确的手机号");
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        System.out.print("error");
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("mobile", id_login_mobile.getText().toString().trim());
-                        map.put("password", id_login_password.getText().toString().trim());
-                        return map;
-                    }
-                };
-                requestQueue.add(sr);
+                }
                 break;
             case R.id.bt_register_info:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
