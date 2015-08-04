@@ -20,9 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
-import com.heaven.heavenhelp.util.StringRequestUtil;
-import com.heaven.heavenhelp.util.ToastUtils;
-import com.heaven.heavenhelp.util.ValidationUtil;
+import com.heaven.heavenhelp.utils.StringRequestUtil;
+import com.heaven.heavenhelp.utils.ToastUtils;
+import com.heaven.heavenhelp.utils.ValidationUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;

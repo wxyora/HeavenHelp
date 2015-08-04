@@ -1,4 +1,4 @@
-package com.heaven.heavenhelp.util;
+package com.heaven.heavenhelp.utils;
 
 import android.content.Context;
 import android.widget.Toast;

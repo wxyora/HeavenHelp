@@ -1,4 +1,4 @@
-package com.heaven.heavenhelp.util;
+package com.heaven.heavenhelp.utils;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;

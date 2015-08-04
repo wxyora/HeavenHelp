@@ -1,4 +1,4 @@
-package com.heaven.heavenhelp.util;
+package com.heaven.heavenhelp.utils;
 
 /**
  * Created by Zhengliang on 15/3/31.
