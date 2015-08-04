@@ -42,7 +42,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ActionBar supportActionBar = getSupportActionBar();
-        supportActionBar.hide();
+       // supportActionBar.hide();
         toastUtils = new ToastUtils(this);
         requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
