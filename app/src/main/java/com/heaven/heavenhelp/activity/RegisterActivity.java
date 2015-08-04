@@ -213,11 +213,21 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                 }
                 break;
             case R.id.id_submit_info:
-                // judgePhoneNums(phoneNums);
-                SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code
-                        .getText().toString());
-                // 验证通过之后，将smssdk注册代码注销
-                SMSSDK.unregisterEventHandler(eventHandler);
+
+                if(TextUtils.isEmpty(id_mobile_number.getText().toString())){
+                    toastUtils.showToastShort("手机号码不能为空");
+                }else if(ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
+                    toastUtils.showToastShort("请输入正确的手机号");
+                }else{
+                    if(TextUtils.isEmpty(id_password.getText().toString())){
+                        toastUtils.showToastShort("密码不能为空");
+                    }else if(id_password.getText().toString().length()<4){
+                        toastUtils.showToastShort("密码长度不能小于4位");
+                    }else {
+                        SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code.getText().toString());
+                        SMSSDK.unregisterEventHandler(eventHandler);
+                    }
+                }
                 break;
             default:
                 break;

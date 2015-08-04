@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.GridView;
 
 
+import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.pulltorefresh.internal.EmptyViewMethodAccessor;
 
 public class PullToRefreshGridView extends PullToRefreshAdapterViewBase<GridView> {

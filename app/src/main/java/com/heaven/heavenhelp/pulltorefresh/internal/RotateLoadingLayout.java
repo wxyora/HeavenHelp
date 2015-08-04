@@ -23,9 +23,10 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView.ScaleType;
 
+import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase.Mode;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase.Orientation;
-import com.heaven.heavenhelp.pulltorefresh.R;
+
 
 
 public class RotateLoadingLayout extends LoadingLayout {

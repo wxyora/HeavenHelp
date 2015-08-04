@@ -36,10 +36,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.pulltorefresh.ILoadingLayout;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase.Mode;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase.Orientation;
-import com.heaven.heavenhelp.pulltorefresh.R;
+
 
 @SuppressLint("ViewConstructor")
 public abstract class LoadingLayout extends FrameLayout implements ILoadingLayout {

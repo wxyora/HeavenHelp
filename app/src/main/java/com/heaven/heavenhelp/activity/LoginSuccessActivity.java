@@ -1,19 +1,98 @@
 package com.heaven.heavenhelp.activity;
 
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.adapter.UserInfoAdapter;
+import com.heaven.heavenhelp.model.UserInfo;
+import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
+import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LoginSuccessActivity extends ActionBarActivity {
+
+
+    PullToRefreshListView newsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_success);
+
+
+
+
+
+
+
+        newsListView = (PullToRefreshListView) findViewById(R.id.pull_to_refresh_text);
+        newsListView.setMode(PullToRefreshBase.Mode.BOTH);
+
+        List<UserInfo> userInfos = new ArrayList<UserInfo>();
+        for(int i = 0;i<1000;i++){
+            userInfos.add(new UserInfo("lisi",String.valueOf(i)));
+        }
+        UserInfoAdapter userInfoAdapter = new UserInfoAdapter(LoginSuccessActivity.this,userInfos);
+
+        newsListView.setAdapter(userInfoAdapter);
+
+        newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        newsListView.onRefreshComplete();
+                        super.onPostExecute(aVoid);
+                    }
+                }.execute();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        newsListView.onRefreshComplete();
+                        super.onPostExecute(aVoid);
+                    }
+                }.execute();
+            }
+        });
+
+
+
+
     }
 
     @Override

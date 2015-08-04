@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import com.heaven.heavenhelp.R;
 
 import com.heaven.heavenhelp.pulltorefresh.internal.EmptyViewMethodAccessor;
 import com.heaven.heavenhelp.pulltorefresh.internal.LoadingLayout;

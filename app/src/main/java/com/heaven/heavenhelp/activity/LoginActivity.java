@@ -81,47 +81,51 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             case R.id.bt_login_submit:
                 if(TextUtils.isEmpty(id_login_mobile.getText().toString())){
                     toastUtils.showToastShort("手机号码不能为空");
-                } else if(TextUtils.isEmpty(id_login_password.getText().toString())){
-                    toastUtils.showToastShort("密码不能为空");
-                } else{
-                    if(ValidationUtil.isMobileNO(id_login_mobile.getText().toString())){
+                }else{
+                    if(!ValidationUtil.isMobileNO(id_login_mobile.getText().toString())){
                         toastUtils.showToastShort("请输入正确的手机号");
                     }else{
-                        StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String s) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(s);
-                                    String result = jsonObject.getString("result");
-                                    if(result.equals("0")){
-                                        Toast.makeText(LoginActivity.this, "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
-                                    }else if(result.equals("3")){
-                                        Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
-                                    }else if(result.equals("1")){
-                                        Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
-                                        startActivity(intent);
-                                    }else{
+                        if(TextUtils.isEmpty(id_login_password.getText().toString())){
+                            toastUtils.showToastShort("密码不能为空");
+                        }else if(id_login_password.getText().toString().length()<4){
+                            toastUtils.showToastShort("密码长度不能小于4位");
+                        }else{
+                            StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String s) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        String result = jsonObject.getString("result");
+                                        if(result.equals("0")){
+                                            Toast.makeText(LoginActivity.this, "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
+                                        }else if(result.equals("3")){
+                                            Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
+                                        }else if(result.equals("1")){
+                                            Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
+                                            startActivity(intent);
+                                        }else{
 
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                System.out.print("error");
-                            }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> map = new HashMap<String, String>();
-                                map.put("mobile", id_login_mobile.getText().toString().trim());
-                                map.put("password", id_login_password.getText().toString().trim());
-                                return map;
-                            }
-                        };
-                        requestQueue.add(sr);
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                    System.out.print("error");
+                                }
+                            }) {
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String, String> map = new HashMap<String, String>();
+                                    map.put("mobile", id_login_mobile.getText().toString().trim());
+                                    map.put("password", id_login_password.getText().toString().trim());
+                                    return map;
+                                }
+                            };
+                            requestQueue.add(sr);
+                        }
                     }
                 }
                 break;

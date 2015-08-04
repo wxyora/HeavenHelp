@@ -13,6 +13,7 @@ public class ToastUtils {
     private Context cxt;
 
     public ToastUtils() {
+
     }
     public ToastUtils(Context ctx) {
         this.cxt = ctx;
@@ -23,6 +24,7 @@ public class ToastUtils {
         if (toast == null) {
             toast = Toast.makeText(cxt, str, Toast.LENGTH_SHORT);
         }
+        toast.setText(str);
         toast.show();
     }
 
@@ -31,6 +33,7 @@ public class ToastUtils {
         if (toast == null) {
             toast = Toast.makeText(cxt, str, Toast.LENGTH_SHORT);
         }
+        toast.setText(str);
         toast.show();
     }
 }
