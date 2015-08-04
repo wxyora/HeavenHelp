@@ -27,17 +27,11 @@ public class LoginSuccessActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_success);
 
-
-
-
-
-
-
         newsListView = (PullToRefreshListView) findViewById(R.id.pull_to_refresh_text);
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
 
         List<UserInfo> userInfos = new ArrayList<UserInfo>();
-        for(int i = 0;i<1000;i++){
+        for(int i = 0;i<100;i++){
             userInfos.add(new UserInfo("lisi",String.valueOf(i)));
         }
         UserInfoAdapter userInfoAdapter = new UserInfoAdapter(LoginSuccessActivity.this,userInfos);
