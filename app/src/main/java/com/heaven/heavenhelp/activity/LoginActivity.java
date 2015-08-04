@@ -43,6 +43,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         ActionBar supportActionBar = getSupportActionBar();
        // supportActionBar.hide();
+        supportActionBar.setTitle("登录-性价比");
         toastUtils = new ToastUtils(this);
         requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
