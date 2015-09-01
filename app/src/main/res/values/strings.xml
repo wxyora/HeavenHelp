@@ -3,6 +3,6 @@
 
     <string name="hello_world">您已经注册成功并登陆，只是我们什么内容都没有，不好意思。</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">注册-性价比</string>
     <string name="title_activity_login_success">我的性价比</string>
 </resources>

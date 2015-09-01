@@ -178,7 +178,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
             case R.id.id_send_code:
                 if(TextUtils.isEmpty(id_mobile_number.getText().toString())){
                     toastUtils.showToastShort("手机号码不能为空");
-                }else if(ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
+                }else if(!ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
                     toastUtils.showToastShort("请输入正确的手机号");
                 }else{
                     StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
@@ -216,16 +216,21 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
 
                 if(TextUtils.isEmpty(id_mobile_number.getText().toString())){
                     toastUtils.showToastShort("手机号码不能为空");
-                }else if(ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
+                }else if(!ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
                     toastUtils.showToastShort("请输入正确的手机号");
                 }else{
-                    if(TextUtils.isEmpty(id_password.getText().toString())){
-                        toastUtils.showToastShort("密码不能为空");
-                    }else if(id_password.getText().toString().length()<4){
-                        toastUtils.showToastShort("密码长度不能小于4位");
-                    }else {
-                        SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code.getText().toString());
-                        SMSSDK.unregisterEventHandler(eventHandler);
+
+                    if(TextUtils.isEmpty(id_gotted_code.getText().toString())){
+                        toastUtils.showToastShort("请输入验证码");
+                    }else{
+                        if(TextUtils.isEmpty(id_password.getText().toString())){
+                            toastUtils.showToastShort("密码不能为空");
+                        }else if(id_password.getText().toString().length()<4){
+                            toastUtils.showToastShort("密码长度不能小于4位");
+                        }else {
+                            SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code.getText().toString());
+                            SMSSDK.unregisterEventHandler(eventHandler);
+                        }
                     }
                 }
                 break;

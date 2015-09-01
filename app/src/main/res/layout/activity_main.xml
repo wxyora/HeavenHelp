@@ -16,11 +16,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:layout_width="fill_parent"
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="请输入手机号"
-                android:id="@+id/id_mobile_number"></EditText>
+                android:orientation="horizontal"
+                >
+
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入手机号"
+                    android:phoneNumber="true"
+                    android:id="@+id/id_mobile_number"
+                    android:layout_weight="4"></EditText>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/id_send_code"
+                    android:text="发送验证码"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="获取到的验证码"
+                android:id="@+id/id_gotted_code"
+                />
+
+
 
             <EditText
                 android:layout_width="fill_parent"
@@ -33,24 +63,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/id_send_code"
-                android:text="发送验证码"
-                />
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="获取到的验证码"
-                android:id="@+id/id_gotted_code"
-                />code"
-                />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/id_submit_info"
                 android:text="提交注册信息"
-                />发送验证码"
-                /
+                />
 
          </LinearLayout>
     </LinearLayout>

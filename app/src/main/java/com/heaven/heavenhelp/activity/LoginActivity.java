@@ -104,6 +104,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                         }else if(result.equals("1")){
                                             Intent intent = new Intent(LoginActivity.this, LoginSuccessActivity.class);
                                             startActivity(intent);
+                                            finish();
                                         }else{
 
                                         }
