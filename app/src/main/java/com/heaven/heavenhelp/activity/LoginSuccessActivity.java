@@ -1,5 +1,6 @@
 package com.heaven.heavenhelp.activity;
 
+import android.app.DownloadManager;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,11 +8,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
-import com.heaven.heavenhelp.adapter.UserInfoAdapter;
+import com.heaven.heavenhelp.adapter.ProductInfoAdapter;
+import com.heaven.heavenhelp.model.ProductInfo;
 import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
+import com.heaven.heavenhelp.utils.StringRequestUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +31,9 @@ import java.util.List;
 
 public class LoginSuccessActivity extends ActionBarActivity {
 
-
     PullToRefreshListView newsListView;
+    RequestQueue requestQueue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +41,42 @@ public class LoginSuccessActivity extends ActionBarActivity {
         setContentView(R.layout.activity_login_success);
         newsListView = (PullToRefreshListView) findViewById(R.id.pull_to_refresh_text);
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
+        requestQueue = Volley.newRequestQueue(this);
 
-        List<UserInfo> userInfos = new ArrayList<UserInfo>();
-        for(int i = 0;i<10;i++){
-            userInfos.add(new UserInfo("lisi",String.valueOf(i)));
-        }
-        UserInfoAdapter userInfoAdapter = new UserInfoAdapter(LoginSuccessActivity.this,userInfos);
 
-        newsListView.setAdapter(userInfoAdapter);
+
+        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/getProductInfo.action", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                List<ProductInfo> productInfos = new ArrayList<ProductInfo>();
+
+                JSONObject jo;
+                try {
+                    JSONArray jsonArray = new JSONArray(s.toString());
+                    for (int i=0;i<jsonArray.length();i++){
+                        ProductInfo productInfo = new ProductInfo();
+                        final Object o = jsonArray.get(i);
+                        final JSONObject jsonObject = new JSONObject(o.toString());
+                        final String productName = jsonObject.getString("productName");
+                        final String productPrice = jsonObject.getString("productPrice");
+                        productInfo.setProductName(productName);
+                        productInfo.setProductPrice(productPrice+" RMB");
+                        productInfos.add(productInfo);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(LoginSuccessActivity.this, productInfos);
+                newsListView.setAdapter(productInfoAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+            }
+        });
+        requestQueue.add(request);
+
 
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
@@ -45,8 +86,8 @@ public class LoginSuccessActivity extends ActionBarActivity {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
+                            requestQueue.add(request);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         return null;
@@ -82,8 +123,6 @@ public class LoginSuccessActivity extends ActionBarActivity {
                 }.execute();
             }
         });
-
-
 
 
     }

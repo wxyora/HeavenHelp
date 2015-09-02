@@ -1,6 +1,7 @@
 package com.heaven.heavenhelp.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     RequestQueue requestQueue;
     EditText id_login_mobile, id_login_password;
     ToastUtils toastUtils;
+    CheckBox remember_user_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,13 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         bt_register_info = (Button) findViewById(R.id.bt_register_info);
         id_login_mobile = (EditText) findViewById(R.id.id_login_mobile);
         id_login_password = (EditText) findViewById(R.id.id_login_password);
+        remember_user_info = (CheckBox)findViewById(R.id.remember_user_info);
         bt_login_submit.setOnClickListener(this);
         bt_register_info.setOnClickListener(this);
+        SharedPreferences sharedPreferences =
+                getSharedPreferences("loginInfo", MODE_PRIVATE);
+        id_login_mobile.setText(sharedPreferences.getString("loginName", null));
+        id_login_password.setText(sharedPreferences.getString("loginPwd", null));
     }
 
     @Override
@@ -80,6 +88,15 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_login_submit:
+
+                SharedPreferences sharedPreferences =
+                        getSharedPreferences("loginInfo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String loginName = id_login_mobile.getText().toString();
+                String loginPwd = id_login_password.getText().toString();
+                boolean checked = remember_user_info.isChecked();
+
+
                 if(TextUtils.isEmpty(id_login_mobile.getText().toString())){
                     toastUtils.showToastShort("手机号码不能为空");
                 }else{
@@ -91,6 +108,18 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                         }else if(id_login_password.getText().toString().length()<4){
                             toastUtils.showToastShort("密码长度不能小于4位");
                         }else{
+
+                            if (checked) {
+                                if (checked) {
+                                    editor.putString("loginName", loginName);
+                                    editor.putString("loginPwd", loginPwd);
+                                    editor.commit();
+                                }
+                            } else {
+                                editor.clear();
+                                editor.commit();
+                            }
+
                             StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {
@@ -121,8 +150,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                 @Override
                                 protected Map<String, String> getParams() throws AuthFailureError {
                                     Map<String, String> map = new HashMap<String, String>();
-                                    map.put("mobile", id_login_mobile.getText().toString().trim());
-                                    map.put("password", id_login_password.getText().toString().trim());
+                                    map.put("mobile",id_login_mobile.getText().toString().trim());
+                                    map.put("password",id_login_password.getText().toString().trim());
                                     return map;
                                 }
                             };

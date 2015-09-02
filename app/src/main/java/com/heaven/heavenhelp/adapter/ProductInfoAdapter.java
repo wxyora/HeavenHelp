@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.model.ProductInfo;
 import com.heaven.heavenhelp.model.UserInfo;
 
 import java.util.List;
@@ -16,24 +17,24 @@ import java.util.List;
 /**
  * Created by Acer-002 on 2015/7/15.
  */
-public class UserInfoAdapter extends BaseAdapter {
+public class ProductInfoAdapter extends BaseAdapter {
 
-    private List<UserInfo> persons;
+    private List<ProductInfo> products;
     Context context;
 
-    public UserInfoAdapter(Context context, List<UserInfo> persons) {
-        this.persons = persons;
+    public ProductInfoAdapter(Context context, List<ProductInfo> products) {
+        this.products = products;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return (persons == null) ? 0 : persons.size();
+        return (products == null) ? 0 : products.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return persons.get(i);
+        return products.get(i);
     }
 
     @Override
@@ -42,22 +43,22 @@ public class UserInfoAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-        TextView tv_user_name;
-        TextView tv_user_age;
+        TextView tv_product_name;
+        TextView tv_product_price;
     }
 
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        UserInfo userInfo = (UserInfo) getItem(i);
+        ProductInfo productInfo = (ProductInfo) getItem(i);
         ViewHolder viewHolder = null;
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.news_list_item, null);
-            viewHolder.tv_user_name = (TextView) convertView.findViewById(
+            viewHolder.tv_product_name = (TextView) convertView.findViewById(
                     R.id.user_name);
-            viewHolder.tv_user_age = (TextView) convertView.findViewById(
+            viewHolder.tv_product_price = (TextView) convertView.findViewById(
                     R.id.user_age);
             convertView.setTag(viewHolder);
         }
@@ -65,8 +66,8 @@ public class UserInfoAdapter extends BaseAdapter {
             viewHolder= (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.tv_user_name.setText(userInfo.getUserName());
-        viewHolder.tv_user_age.setText(userInfo.getUserAge());
+        viewHolder.tv_product_name.setText(productInfo.getProductName());
+        viewHolder.tv_product_price.setText(productInfo.getProductPrice());
 
         return convertView;
     }
