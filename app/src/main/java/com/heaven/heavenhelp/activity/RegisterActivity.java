@@ -112,6 +112,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                                     if ("1".equals(result)) {
                                         Intent intent = new Intent(RegisterActivity.this, LoginSuccessActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     } else if ("0".equals(result)) {
                                         Toast.makeText(RegisterActivity.this, "系统异常", Toast.LENGTH_SHORT).show();
                                     } else if ("2".equals(result)) {
