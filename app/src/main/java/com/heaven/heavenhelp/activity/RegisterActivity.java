@@ -145,6 +145,8 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                     } else {
                         ((Throwable) data).printStackTrace();
                     }
+                }else{
+                    Toast.makeText(RegisterActivity.this, "验证码不正确", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -229,7 +231,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                             toastUtils.showToastShort("密码长度不能小于4位");
                         }else {
                             SMSSDK.submitVerificationCode("86", id_mobile_number.getText().toString(), id_gotted_code.getText().toString());
-                            SMSSDK.unregisterEventHandler(eventHandler);
+                            //SMSSDK.unregisterEventHandler(eventHandler);
                         }
                     }
                 }
