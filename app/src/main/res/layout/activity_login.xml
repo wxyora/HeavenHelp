@@ -45,6 +45,7 @@
             android:drawablePadding="10dp"
             android:drawableLeft="@drawable/account"
             android:id="@+id/id_login_password" />
+
     </LinearLayout>
 
     <LinearLayout

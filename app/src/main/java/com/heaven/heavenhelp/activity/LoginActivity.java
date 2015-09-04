@@ -1,17 +1,23 @@
 package com.heaven.heavenhelp.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,19 +40,21 @@ import java.util.Map;
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
-    Button bt_login_submit, bt_register_info;
-    RequestQueue requestQueue;
-    EditText id_login_mobile, id_login_password;
-    ToastUtils toastUtils;
-    CheckBox remember_user_info;
+    private Button bt_login_submit, bt_register_info;
+    private RequestQueue requestQueue;
+    private EditText id_login_mobile, id_login_password;
+    private ToastUtils toastUtils;
+    private CheckBox remember_user_info;
+    private ProgressBar mProgressBar;
+    private Dialog mDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ActionBar supportActionBar = getSupportActionBar();
-       // supportActionBar.hide();
-        supportActionBar.setTitle("登录-性价比");
+        supportActionBar.setTitle("登录");
         toastUtils = new ToastUtils(this);
         requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
@@ -119,7 +127,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                 editor.clear();
                                 editor.commit();
                             }
-
+                            showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);
                             StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {
@@ -137,6 +145,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                         }else{
 
                                         }
+                                        mDialog.dismiss();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -167,5 +176,26 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             default:
                 break;
         }
+    }
+
+    public void showRoundProcessDialog(Context mContext, int layout)
+    {
+        DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KeyEvent.KEYCODE_SEARCH)
+                {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        mDialog = new AlertDialog.Builder(mContext).create();
+        mDialog.setOnKeyListener(keyListener);
+        mDialog.show();
+        mDialog.setContentView(layout);
     }
 }
