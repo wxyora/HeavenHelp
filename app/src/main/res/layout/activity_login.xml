@@ -14,7 +14,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="88dp"
+        android:layout_height="90dp"
         android:id="@+id/imageView"
         android:src="@drawable/login_logo" />
 
@@ -76,14 +76,16 @@
             android:background="@anim/shape"
             android:layout_marginRight="20dp"
             android:layout_weight="2"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:textColor="#cecfc103" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="创建"
             android:id="@+id/bt_register_info"
             android:background="@anim/shape"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="#cecfc103" />
     </LinearLayout>
 
     <ImageView
@@ -100,6 +102,6 @@
         android:textSize="16dp"
         android:layout_gravity="right"
         android:layout_marginTop="22dp"
-        android:textColor="#25ffd1" />
+        android:textColor="#000000" />
 
 </LinearLayout>

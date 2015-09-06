@@ -153,7 +153,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError volleyError) {
-                                    System.out.print("error");
+                                    Toast.makeText(LoginActivity.this,"网络异常，请稍后再试。",Toast.LENGTH_SHORT).show();
+                                    mDialog.dismiss();
                                 }
                             }) {
                                 @Override
