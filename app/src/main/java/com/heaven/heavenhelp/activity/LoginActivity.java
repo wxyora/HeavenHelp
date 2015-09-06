@@ -13,11 +13,13 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
 import com.heaven.heavenhelp.utils.ValidationUtil;
@@ -47,6 +50,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     private CheckBox remember_user_info;
     private ProgressBar mProgressBar;
     private Dialog mDialog;
+    private TextView tv_forget_password;
 
 
     @Override
@@ -62,8 +66,10 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         id_login_mobile = (EditText) findViewById(R.id.id_login_mobile);
         id_login_password = (EditText) findViewById(R.id.id_login_password);
         remember_user_info = (CheckBox)findViewById(R.id.remember_user_info);
+        tv_forget_password = (TextView) findViewById(R.id.tv_forget_password);
         bt_login_submit.setOnClickListener(this);
         bt_register_info.setOnClickListener(this);
+        tv_forget_password.setOnClickListener(this);
         SharedPreferences sharedPreferences =
                 getSharedPreferences("loginInfo", MODE_PRIVATE);
         id_login_mobile.setText(sharedPreferences.getString("loginName", null));
@@ -127,10 +133,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                 editor.clear();
                                 editor.commit();
                             }
-                            showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);
+
+                            LoadProcessDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
                             StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {
+                                    mDialog.dismiss();
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         String result = jsonObject.getString("result");
@@ -145,7 +153,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                         }else{
 
                                         }
-                                        mDialog.dismiss();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -171,32 +178,16 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 }
                 break;
             case R.id.bt_register_info:
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                Intent raIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(raIntent);
+                break;
+            case R.id.tv_forget_password:
+                Intent fdIntent = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(fdIntent);
                 break;
             default:
                 break;
         }
     }
 
-    public void showRoundProcessDialog(Context mContext, int layout)
-    {
-        DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KeyEvent.KEYCODE_SEARCH)
-                {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        mDialog = new AlertDialog.Builder(mContext).create();
-        mDialog.setOnKeyListener(keyListener);
-        mDialog.show();
-        mDialog.setContentView(layout);
-    }
 }

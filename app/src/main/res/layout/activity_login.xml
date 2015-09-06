@@ -73,19 +73,19 @@
             android:text="登陆"
 
             android:id="@+id/bt_login_submit"
-            android:background="@anim/shape"
+            android:background="@drawable/btn_style"
             android:layout_marginRight="20dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:textColor="#cecfc103" />
+            android:textColor="#000000" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="创建"
             android:id="@+id/bt_register_info"
-            android:background="@anim/shape"
+            android:background="@drawable/btn_style"
             android:layout_weight="1"
-            android:textColor="#cecfc103" />
+            android:textColor="#000000" />
     </LinearLayout>
 
     <ImageView
@@ -98,8 +98,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="忘记密码？"
-        android:id="@+id/textView"
-        android:textSize="16dp"
+        android:id="@+id/tv_forget_password"
+        android:textSize="12dp"
         android:layout_gravity="right"
         android:layout_marginTop="22dp"
         android:textColor="#000000" />
