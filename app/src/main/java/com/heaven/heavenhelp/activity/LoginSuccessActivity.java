@@ -1,5 +1,6 @@
 package com.heaven.heavenhelp.activity;
 
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,6 +21,7 @@ import com.heaven.heavenhelp.model.ProductInfo;
 import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
+import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 
 import org.json.JSONArray;
@@ -33,6 +36,7 @@ public class LoginSuccessActivity extends ActionBarActivity {
 
     PullToRefreshListView newsListView;
     RequestQueue requestQueue;
+    Dialog mDialog;
 
 
     @Override
@@ -44,23 +48,21 @@ public class LoginSuccessActivity extends ActionBarActivity {
         requestQueue = Volley.newRequestQueue(this);
 
 
-
+        mDialog = LoadProcessDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);
         final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/getProductInfo.action", new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 List<ProductInfo> productInfos = new ArrayList<ProductInfo>();
-
-                JSONObject jo;
                 try {
                     JSONArray jsonArray = new JSONArray(s.toString());
-                    for (int i=0;i<jsonArray.length();i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         ProductInfo productInfo = new ProductInfo();
                         final Object o = jsonArray.get(i);
                         final JSONObject jsonObject = new JSONObject(o.toString());
                         final String productName = jsonObject.getString("productName");
                         final String productPrice = jsonObject.getString("productPrice");
                         productInfo.setProductName(productName);
-                        productInfo.setProductPrice(productPrice+" RMB");
+                        productInfo.setProductPrice(productPrice + " RMB");
                         productInfos.add(productInfo);
                     }
 
@@ -69,10 +71,13 @@ public class LoginSuccessActivity extends ActionBarActivity {
                 }
                 ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(LoginSuccessActivity.this, productInfos);
                 newsListView.setAdapter(productInfoAdapter);
+                mDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                mDialog.dismiss();
+                Toast.makeText(LoginSuccessActivity.this, "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);
