@@ -134,7 +134,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                 editor.commit();
                             }
 
-                            LoadProcessDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
+                            mDialog = LoadProcessDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
                             StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {
