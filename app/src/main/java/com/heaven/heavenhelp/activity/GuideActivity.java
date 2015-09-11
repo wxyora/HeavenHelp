@@ -31,7 +31,7 @@ public class GuideActivity extends Activity implements View.OnClickListener {
                 getSharedPreferences("loginInfo", MODE_PRIVATE);
         String firstEnterFlag = sharedPreferences.getString("firstEnterFlag", null);
         if("yes".equals(firstEnterFlag)){
-            Intent intent = new Intent(GuideActivity.this, LoginActivity.class);
+            Intent intent = new Intent(GuideActivity.this, IndexActivity.class);
             startActivity(intent);
             finish();
         }
