@@ -22,6 +22,7 @@
             android:label="性价比" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,12 +35,10 @@
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_login" >
         </activity>
-
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
-
         <activity
             android:name=".activity.LoginSuccessActivity"
             android:label="@string/title_activity_login_success" >
@@ -47,6 +46,10 @@
         <activity
             android:name=".activity.FindPasswordActivity"
             android:label="@string/title_activity_find_password" >
+        </activity>
+        <activity
+            android:name=".activity.IndexActivity"
+            android:label="@string/title_activity_index" >
         </activity>
     </application>
 

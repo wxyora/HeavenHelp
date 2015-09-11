@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class GuideActivity extends Activity implements View.OnClickListener {
 
     private ViewPager vp;
-    private ViewPaperAdapter vpAdaper;
+    private ViewPagerAdapter vpAdaper;
 
     private List<View> views;
 
@@ -50,7 +51,7 @@ public class GuideActivity extends Activity implements View.OnClickListener {
         views.add(guide_view_one);
         views.add(guide_view_two);
         views.add(guide_view_three);
-        vpAdaper = new ViewPaperAdapter(views, getApplicationContext());
+        vpAdaper = new ViewPagerAdapter(views, getApplicationContext());
         ViewPager viewPager = (ViewPager) findViewById(R.id.id_guide_page_one);
         viewPager.setAdapter(vpAdaper);
 

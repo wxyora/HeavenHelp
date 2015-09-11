@@ -1,4 +1,4 @@
-package com.heaven.heavenhelp.activity;
+package com.heaven.heavenhelp.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * Created by Acer-002 on 2015/9/8.
  */
-public class ViewPaperAdapter extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter {
 
     private List<View> views;
     private Context context;
 
 
-    public ViewPaperAdapter(List<View> views,Context context){
+    public ViewPagerAdapter(List<View> views, Context context){
         this.views = views;
         this.context = context;
     }
