@@ -135,7 +135,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             }
 
                             mDialog = LoadProcessDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
-                            StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/loginValidate.action", new Response.Listener<String>() {
+                            StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/loginValidate.action", new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {
                                     mDialog.dismiss();

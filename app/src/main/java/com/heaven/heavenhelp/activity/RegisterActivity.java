@@ -103,7 +103,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                 if (result == SMSSDK.RESULT_COMPLETE) {
 
                     if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/register.action", new Response.Listener<String>() {
+                        StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/register.action", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
                                 try {
@@ -184,7 +184,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                 }else if(!ValidationUtil.isMobileNO(id_mobile_number.getText().toString())){
                     toastUtils.showToastShort("请输入正确的手机号");
                 }else{
-                    StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/findUserByMobile.action", new Response.Listener<String>() {
+                    StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/findUserByMobile.action", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String s) {
                             try {

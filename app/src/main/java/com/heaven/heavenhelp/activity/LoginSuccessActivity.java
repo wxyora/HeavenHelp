@@ -49,7 +49,7 @@ public class LoginSuccessActivity extends ActionBarActivity {
 
 
         mDialog = LoadProcessDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);
-        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, "http://waylonsir.imwork.net/celechem/getProductInfo.action", new Response.Listener<String>() {
+        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/getProductInfo.action", new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 List<ProductInfo> productInfos = new ArrayList<ProductInfo>();
