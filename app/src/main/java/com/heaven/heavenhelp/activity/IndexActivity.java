@@ -63,5 +63,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+        System.out.print(true);
+
     }
 }

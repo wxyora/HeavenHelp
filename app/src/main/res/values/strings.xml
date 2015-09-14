@@ -10,7 +10,7 @@
     <string name="color">颜色</string>
     <string name="icon">图片</string>
     <string name="title_activity_find_password">FindPasswordActivity</string>
-    <string name="title_activity_index">IndexActivity</string>
+    <string name="title_activity_index">附近的菜店</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

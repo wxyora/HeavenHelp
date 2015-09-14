@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="信息"
+            android:text="买菜"
             android:id="@+id/tab1"
             android:layout_weight="1"
             android:gravity="center" />
@@ -38,7 +38,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="其他"
+            android:text="发现"
             android:id="@+id/tab3"
             android:layout_weight="1"
             android:gravity="center" />
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="我"
+            android:text="我的"
             android:id="@+id/tab4"
             android:layout_weight="1"
             android:gravity="center" />
