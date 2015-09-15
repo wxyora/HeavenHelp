@@ -15,7 +15,7 @@ import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener {
+public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener ,LoginSuccessFragment.OnFragmentInteractionListener{
 
     ViewPager pag=null;
     private ArrayList<Fragment> fragmentList=null;
@@ -26,17 +26,36 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         setContentView(R.layout.activity_index);
         pag=(ViewPager)this.findViewById(R.id.id_viewPager);
         initViewpager();
-    }
 
+    }
 
     private void initViewpager(){
         ProductInfoFragment fragment1 = ProductInfoFragment.newInstance("123","qwe");
-        MyCenterFragment fragment2 = MyCenterFragment.newInstance("345","qwe");
-        LayoutInflater inflater = getLayoutInflater();
+        final MyCenterFragment fragment2 = MyCenterFragment.newInstance("345", "qwe");
+
         fragmentList=new ArrayList<Fragment>();
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
-        pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(),fragmentList));
+        pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
+
+        pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                System.out.print(position);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (1==position) {
+                    fragment2.loginRequst();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                System.out.print(state);
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,8 +81,6 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
-        System.out.print(true);
 
     }
 }

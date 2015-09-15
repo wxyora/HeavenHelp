@@ -2,7 +2,6 @@ package com.heaven.heavenhelp.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -47,7 +46,7 @@ import java.util.Map;
  * Use the {@link MyCenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCenterFragment extends Fragment implements View.OnClickListener{
+public class MyCenterFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,10 +55,7 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
-
     private Button bt_login_submit, bt_register_info;
     private RequestQueue requestQueue;
     private EditText id_login_mobile, id_login_password;
@@ -67,8 +63,7 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
     private CheckBox remember_user_info;
     private ProgressBar mProgressBar;
     private Dialog mDialog;
-    private TextView tv_forget_password;
-
+    private TextView tv_forget_password, tv_login_success;
 
     /**
      * Use this factory method to create a new instance of
@@ -105,7 +100,7 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View activity_login = inflater.inflate(R.layout.activity_login, container, false);
+        View activity_login = inflater.inflate(R.layout.fragment_my_center, container, false);
 
         toastUtils = new ToastUtils(getActivity());
         requestQueue = Volley.newRequestQueue(getActivity());
@@ -113,13 +108,15 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
         bt_register_info = (Button) activity_login.findViewById(R.id.bt_register_info);
         id_login_mobile = (EditText) activity_login.findViewById(R.id.id_login_mobile);
         id_login_password = (EditText) activity_login.findViewById(R.id.id_login_password);
-        remember_user_info = (CheckBox)activity_login.findViewById(R.id.remember_user_info);
+        remember_user_info = (CheckBox) activity_login.findViewById(R.id.remember_user_info);
         tv_forget_password = (TextView) activity_login.findViewById(R.id.tv_forget_password);
+        tv_login_success = (TextView) activity_login.findViewById(R.id.tv_login_success);
+
         bt_login_submit.setOnClickListener(this);
         bt_register_info.setOnClickListener(this);
         tv_forget_password.setOnClickListener(this);
         SharedPreferences sharedPreferences =
-               getActivity().getSharedPreferences("loginInfo", 0);
+                getActivity().getSharedPreferences("loginInfo", 0);
         id_login_mobile.setText(sharedPreferences.getString("loginName", null));
         id_login_password.setText(sharedPreferences.getString("loginPwd", null));
 
@@ -142,6 +139,16 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_login_submit:
@@ -155,17 +162,17 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
                 boolean checked = remember_user_info.isChecked();
 
 
-                if(TextUtils.isEmpty(id_login_mobile.getText().toString())){
+                if (TextUtils.isEmpty(id_login_mobile.getText().toString())) {
                     toastUtils.showToastShort("手机号码不能为空");
-                }else{
-                    if(!ValidationUtil.isMobileNO(id_login_mobile.getText().toString())){
+                } else {
+                    if (!ValidationUtil.isMobileNO(id_login_mobile.getText().toString())) {
                         toastUtils.showToastShort("请输入正确的手机号");
-                    }else{
-                        if(TextUtils.isEmpty(id_login_password.getText().toString())){
+                    } else {
+                        if (TextUtils.isEmpty(id_login_password.getText().toString())) {
                             toastUtils.showToastShort("密码不能为空");
-                        }else if(id_login_password.getText().toString().length()<4){
+                        } else if (id_login_password.getText().toString().length() < 4) {
                             toastUtils.showToastShort("密码长度不能小于4位");
-                        }else{
+                        } else {
 
                             if (checked) {
                                 if (checked) {
@@ -177,45 +184,7 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
                                 editor.clear();
                                 editor.commit();
                             }
-
-                            mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
-                            StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/loginValidate.action", new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String s) {
-                                    mDialog.dismiss();
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(s);
-                                        String result = jsonObject.getString("result");
-                                        if(result.equals("0")){
-                                            Toast.makeText(getActivity(), "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
-                                        }else if(result.equals("3")){
-                                            Toast.makeText(getActivity(), "请核对用户名和密码", Toast.LENGTH_SHORT).show();
-                                        }else if(result.equals("1")){
-                                            Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
-                                            startActivity(intent);
-                                        }else{
-
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError volleyError) {
-                                    Toast.makeText(getActivity(),"网络异常，请稍后再试。",Toast.LENGTH_SHORT).show();
-                                    mDialog.dismiss();
-                                }
-                            }) {
-                                @Override
-                                protected Map<String, String> getParams() throws AuthFailureError {
-                                    Map<String, String> map = new HashMap<String, String>();
-                                    map.put("mobile",id_login_mobile.getText().toString().trim());
-                                    map.put("password",id_login_password.getText().toString().trim());
-                                    return map;
-                                }
-                            };
-                            requestQueue.add(sr);
+                            loginRequst();
                         }
                     }
                 }
@@ -231,6 +200,49 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+
+    public void loginRequst() {
+        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
+        StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/loginValidate.action", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                mDialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    String result = jsonObject.getString("result");
+                    if (result.equals("0")) {
+                        Toast.makeText(getActivity(), "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
+                    } else if (result.equals("3")) {
+                        Toast.makeText(getActivity(), "请核对用户名和密码", Toast.LENGTH_SHORT).show();
+                    } else if (result.equals("1")) {
+                       /* Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
+                        startActivity(intent);*/
+                        tv_login_success.setText("login again");
+                    } else {
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
+                mDialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("mobile", id_login_mobile.getText().toString().trim());
+                map.put("password", id_login_password.getText().toString().trim());
+                return map;
+            }
+        };
+        requestQueue.add(sr);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
