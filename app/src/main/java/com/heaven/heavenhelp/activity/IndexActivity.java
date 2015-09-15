@@ -1,5 +1,6 @@
 package com.heaven.heavenhelp.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -35,15 +36,24 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         initViewpager();
 
     }
+    ProductInfoFragment fragment1;
+     MyCenterFragment fragment2;
 
     private void initViewpager(){
-        ProductInfoFragment fragment1 = ProductInfoFragment.newInstance("123","qwe");
-        final MyCenterFragment fragment2 = MyCenterFragment.newInstance("345", "qwe");
+        fragment1 = ProductInfoFragment.newInstance("123","qwe");
+         fragment2 = MyCenterFragment.newInstance("345", "qwe");
         tv_buy_vegetable.setBackgroundColor(Color.GRAY);
         fragmentList=new ArrayList<Fragment>();
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
         pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
+        Intent intent = getIntent();
+        String loginSuccess = intent.getStringExtra("loginSuccess");
+        if("1".equals(loginSuccess)){
+           pag.setCurrentItem(1);
+            //fragment2.dealLogined();
+            fragment2.loginRequst();
+        }
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

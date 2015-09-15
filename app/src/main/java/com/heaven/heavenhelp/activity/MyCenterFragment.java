@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,7 +47,7 @@ import java.util.Map;
  * Use the {@link MyCenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCenterFragment extends Fragment implements View.OnClickListener {
+public class MyCenterFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,14 +57,11 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
-    private Button bt_login_submit, bt_register_info;
     private RequestQueue requestQueue;
-    private EditText id_login_mobile, id_login_password;
     private ToastUtils toastUtils;
-    private CheckBox remember_user_info;
-    private ProgressBar mProgressBar;
-    private Dialog mDialog;
-    private TextView tv_forget_password, tv_login_success;
+    private Button bt_login;
+    private TextView tv_login_info;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -104,22 +102,15 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
 
         toastUtils = new ToastUtils(getActivity());
         requestQueue = Volley.newRequestQueue(getActivity());
-        bt_login_submit = (Button) activity_login.findViewById(R.id.bt_login_submit);
-        bt_register_info = (Button) activity_login.findViewById(R.id.bt_register_info);
-        id_login_mobile = (EditText) activity_login.findViewById(R.id.id_login_mobile);
-        id_login_password = (EditText) activity_login.findViewById(R.id.id_login_password);
-        remember_user_info = (CheckBox) activity_login.findViewById(R.id.remember_user_info);
-        tv_forget_password = (TextView) activity_login.findViewById(R.id.tv_forget_password);
-        tv_login_success = (TextView) activity_login.findViewById(R.id.tv_login_success);
-
-        bt_login_submit.setOnClickListener(this);
-        bt_register_info.setOnClickListener(this);
-        tv_forget_password.setOnClickListener(this);
-        SharedPreferences sharedPreferences =
-                getActivity().getSharedPreferences("loginInfo", 0);
-        id_login_mobile.setText(sharedPreferences.getString("loginName", null));
-        id_login_password.setText(sharedPreferences.getString("loginPwd", null));
-
+        bt_login = (Button)activity_login.findViewById(R.id.bt_login);
+        tv_login_info = (TextView)activity_login.findViewById(R.id.tv_login_info);
+        bt_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
         return activity_login;
     }
 
@@ -143,67 +134,13 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
         super.onResume();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_login_submit:
-
-                SharedPreferences sharedPreferences =
-                        getActivity().getSharedPreferences("loginInfo", 0);
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String loginName = id_login_mobile.getText().toString();
-                String loginPwd = id_login_password.getText().toString();
-                boolean checked = remember_user_info.isChecked();
-
-
-                if (TextUtils.isEmpty(id_login_mobile.getText().toString())) {
-                    toastUtils.showToastShort("手机号码不能为空");
-                } else {
-                    if (!ValidationUtil.isMobileNO(id_login_mobile.getText().toString())) {
-                        toastUtils.showToastShort("请输入正确的手机号");
-                    } else {
-                        if (TextUtils.isEmpty(id_login_password.getText().toString())) {
-                            toastUtils.showToastShort("密码不能为空");
-                        } else if (id_login_password.getText().toString().length() < 4) {
-                            toastUtils.showToastShort("密码长度不能小于4位");
-                        } else {
-
-                            if (checked) {
-                                if (checked) {
-                                    editor.putString("loginName", loginName);
-                                    editor.putString("loginPwd", loginPwd);
-                                    editor.commit();
-                                }
-                            } else {
-                                editor.clear();
-                                editor.commit();
-                            }
-                            loginRequst();
-                        }
-                    }
-                }
-                break;
-            case R.id.bt_register_info:
-                Intent raIntent = new Intent(getActivity(), RegisterActivity.class);
-                startActivity(raIntent);
-                break;
-            case R.id.tv_forget_password:
-                Intent fdIntent = new Intent(getActivity(), FindPasswordActivity.class);
-                startActivity(fdIntent);
-                break;
-            default:
-                break;
-        }
+    public void dealLogined(){
+        tv_login_info.setText("登陆成功");
     }
 
 
     public void loginRequst() {
+        //tv_login_info.setText("登陆成功");
         //mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
         StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/loginValidate.action", new Response.Listener<String>() {
             @Override
@@ -214,12 +151,14 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
                     String result = jsonObject.getString("result");
                     if (result.equals("0")) {
                         Toast.makeText(getActivity(), "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
+
                     } else if (result.equals("3")) {
                         Toast.makeText(getActivity(), "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                     } else if (result.equals("1")) {
                        /* Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
                         startActivity(intent);*/
-                        tv_login_success.setText("login again");
+                        tv_login_info.setText("登陆成功");
+                        //bt_login.setVisibility(View.GONE);
                     } else {
 
                     }
@@ -237,8 +176,9 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("mobile", id_login_mobile.getText().toString().trim());
-                map.put("password", id_login_password.getText().toString().trim());
+                //后续换成token
+                map.put("mobile", "15901966196");
+                map.put("password", "123456");
                 return map;
             }
         };
