@@ -1,5 +1,7 @@
 package com.heaven.heavenhelp.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
@@ -19,12 +23,15 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
 
     ViewPager pag=null;
     private ArrayList<Fragment> fragmentList=null;
+    private TextView tv_my_host,tv_buy_vegetable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         pag=(ViewPager)this.findViewById(R.id.id_viewPager);
+        tv_my_host =(TextView)findViewById(R.id.tv_my_host);
+        tv_buy_vegetable = (TextView)findViewById(R.id.tv_buy_vegetable);
         initViewpager();
 
     }
@@ -32,12 +39,12 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     private void initViewpager(){
         ProductInfoFragment fragment1 = ProductInfoFragment.newInstance("123","qwe");
         final MyCenterFragment fragment2 = MyCenterFragment.newInstance("345", "qwe");
-
+        tv_buy_vegetable.setBackgroundColor(Color.GRAY);
         fragmentList=new ArrayList<Fragment>();
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
         pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
-
+        final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -46,8 +53,15 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
 
             @Override
             public void onPageSelected(int position) {
-                if (1==position) {
+                if (1 == position) {
                     fragment2.loginRequst();
+                    tv_my_host.setBackgroundColor(Color.GRAY);
+                    tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
+                }
+                if (0 == position) {
+                    fragment2.loginRequst();
+                    tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
+                    tv_buy_vegetable.setBackgroundColor(Color.GRAY);
                 }
             }
 
@@ -56,6 +70,28 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
                 System.out.print(state);
             }
         });
+
+        tv_my_host.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pag.setCurrentItem(1);
+                tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
+                tv_my_host.setBackgroundColor(Color.GRAY);
+            }
+
+        });
+
+        tv_buy_vegetable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pag.setCurrentItem(0);
+                tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
+                tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+            }
+
+        });
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
