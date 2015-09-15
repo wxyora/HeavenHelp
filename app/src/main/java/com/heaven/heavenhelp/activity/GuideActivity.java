@@ -67,7 +67,7 @@ public class GuideActivity extends Activity implements View.OnClickListener {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("firstEnterFlag","yes");
                 editor.commit();
-                Intent intent = new Intent(GuideActivity.this, LoginActivity.class);
+                Intent intent = new Intent(GuideActivity.this, IndexActivity.class);
                 startActivity(intent);
                 finish();
                 break;
