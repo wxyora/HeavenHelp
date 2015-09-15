@@ -111,6 +111,9 @@ public class MyCenterFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
+        loginRequst();
+
         return activity_login;
     }
 
@@ -134,9 +137,6 @@ public class MyCenterFragment extends Fragment{
         super.onResume();
     }
 
-    public void dealLogined(){
-        tv_login_info.setText("登陆成功");
-    }
 
 
     public void loginRequst() {
