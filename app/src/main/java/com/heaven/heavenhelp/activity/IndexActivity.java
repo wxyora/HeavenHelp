@@ -15,7 +15,7 @@ import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener ,LoginSuccessFragment.OnFragmentInteractionListener{
+public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener{
 
     ViewPager pag=null;
     private ArrayList<Fragment> fragmentList=null;

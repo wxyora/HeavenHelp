@@ -204,11 +204,11 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
 
 
     public void loginRequst() {
-        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
+        //mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
         StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/loginValidate.action", new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                mDialog.dismiss();
+               // mDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     String result = jsonObject.getString("result");
@@ -231,7 +231,7 @@ public class MyCenterFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
-                mDialog.dismiss();
+                //mDialog.dismiss();
             }
         }) {
             @Override
