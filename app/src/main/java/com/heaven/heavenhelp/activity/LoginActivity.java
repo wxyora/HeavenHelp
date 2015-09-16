@@ -147,10 +147,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                         }else if(result.equals("3")){
                                             Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                                         }else if(result.equals("1")){
-                                            Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
+                                          /*  Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
                                             intent.putExtra("loginSuccess","1");
 
-                                            startActivity(intent);
+                                            startActivity(intent);*/
+                                            Intent intent = new Intent();
+                                            setResult(0);
                                             finish();
                                         }else{
 

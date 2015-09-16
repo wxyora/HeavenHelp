@@ -108,7 +108,7 @@ public class MyCenterFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,0);
             }
         });
 
@@ -116,6 +116,13 @@ public class MyCenterFragment extends Fragment{
 
         return activity_login;
     }
+
+    public void test(){
+        tv_login_info.setText("登陆成功");
+        bt_login.setVisibility(View.GONE);
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -155,9 +162,9 @@ public class MyCenterFragment extends Fragment{
                     } else if (result.equals("3")) {
                         Toast.makeText(getActivity(), "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                     } else if (result.equals("1")) {
-                       /* Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
+                        /*Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
                         startActivity(intent);*/
-                        tv_login_info.setText("登陆成功");
+                        //tv_login_info.setText("登陆成功");
                         //bt_login.setVisibility(View.GONE);
                     } else {
 

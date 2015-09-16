@@ -26,6 +26,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     private ArrayList<Fragment> fragmentList=null;
     private TextView tv_my_host,tv_buy_vegetable;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +40,14 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     ProductInfoFragment fragment1;
      MyCenterFragment fragment2;
 
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        fragment2.test();
+        final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
+        tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
+        tv_my_host.setBackgroundColor(Color.GRAY);
+    }
     private void initViewpager(){
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
         fragment1 = ProductInfoFragment.newInstance("123","qwe");
@@ -51,16 +57,8 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
         pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
-
         Intent intent = getIntent();
         String loginSuccess = intent.getStringExtra("loginSuccess");
-        if("1".equals(loginSuccess)){
-            pag.setCurrentItem(1);
-            tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
-            tv_my_host.setBackgroundColor(Color.GRAY);
-        }
-
-
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
