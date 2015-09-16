@@ -164,7 +164,7 @@ public class MyCenterFragment extends Fragment{
                     } else if (result.equals("1")) {
                         /*Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
                         startActivity(intent);*/
-                        //tv_login_info.setText("登陆成功");
+                        tv_login_info.setText("自动登陆成功");
                         //bt_login.setVisibility(View.GONE);
                     } else {
 
