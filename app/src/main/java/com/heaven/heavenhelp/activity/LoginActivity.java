@@ -103,9 +103,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.bt_login_submit:
 
-                SharedPreferences sharedPreferences =
+                SharedPreferences loginInfoShare =
                         getSharedPreferences("loginInfo", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                SharedPreferences.Editor editor = loginInfoShare.edit();
                 String loginName = id_login_mobile.getText().toString();
                 String loginPwd = id_login_password.getText().toString();
                 boolean checked = remember_user_info.isChecked();
@@ -142,16 +142,17 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         String result = jsonObject.getString("result");
+                                        String token = jsonObject.getString("token");
                                         if(result.equals("0")){
                                             Toast.makeText(LoginActivity.this, "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
                                         }else if(result.equals("3")){
                                             Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                                         }else if(result.equals("1")){
-                                          /*  Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
-                                            intent.putExtra("loginSuccess","1");
-
-                                            startActivity(intent);*/
-                                            Intent intent = new Intent();
+                                            SharedPreferences loginInfoShare =
+                                                    getSharedPreferences("loginInfo", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = loginInfoShare.edit();
+                                            editor.putString("token",token);
+                                            editor.commit();
                                             setResult(0);
                                             finish();
                                         }else{
