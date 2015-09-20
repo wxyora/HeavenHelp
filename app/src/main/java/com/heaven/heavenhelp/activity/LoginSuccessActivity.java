@@ -21,6 +21,7 @@ import com.heaven.heavenhelp.model.ProductInfo;
 import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
+import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 
@@ -49,7 +50,7 @@ public class LoginSuccessActivity extends ActionBarActivity {
 
 
         mDialog = LoadProcessDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);
-        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/getProductInfo.action", new Response.Listener<String>() {
+        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 List<ProductInfo> productInfos = new ArrayList<ProductInfo>();

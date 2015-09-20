@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
@@ -135,7 +136,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             }
 
                             mDialog = LoadProcessDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
-                            StringRequest sr = new StringRequestUtil(Request.Method.POST, "http://123.57.158.178:9090/celechem/loginValidate.action", new Response.Listener<String>() {
+                            StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.loginValidate, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String s) {
                                     mDialog.dismiss();
