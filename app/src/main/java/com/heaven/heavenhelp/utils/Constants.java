@@ -11,7 +11,7 @@ public class Constants {
 
     public static final String getProductInfo = "celechem/getProductInfo.action";
 
-    public static final String loginValidate = "celechem/getProductInfo.action";
+    public static final String loginValidate = "celechem/loginValidate.action";
 
     public static final String register = "celechem/register.action";
 
