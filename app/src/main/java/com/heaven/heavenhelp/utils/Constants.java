@@ -7,7 +7,7 @@ public class Constants {
         PAGE_LOGIN
     }
 
-    public static final String host = "http://123.57.158.178:9090/";
+    public static final String host = "http://waylonsir.imwork.net/";
 
     public static final String getProductInfo = "celechem/getProductInfo.action";
 
