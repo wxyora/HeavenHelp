@@ -7,7 +7,11 @@ public class UserInfo {
 
     private String userName;
 
+    private String mobile;
+
     private String userAge;
+
+    private String token;
 
 
     public UserInfo() {
@@ -25,5 +29,21 @@ public class UserInfo {
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

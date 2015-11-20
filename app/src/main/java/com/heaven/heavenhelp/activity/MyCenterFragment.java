@@ -2,6 +2,7 @@ package com.heaven.heavenhelp.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -28,8 +29,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
+import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
 import com.heaven.heavenhelp.utils.ValidationUtil;
@@ -39,6 +42,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.smssdk.SMSSDK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,25 +108,16 @@ public class MyCenterFragment extends Fragment{
 
         toastUtils = new ToastUtils(getActivity());
         requestQueue = Volley.newRequestQueue(getActivity());
-        bt_login = (Button)activity_login.findViewById(R.id.bt_login);
+        //bt_login = (Button)activity_login.findViewById(R.id.bt_login);
         tv_login_info = (TextView)activity_login.findViewById(R.id.tv_login_info);
-        bt_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivityForResult(intent,0);
-            }
-        });
 
-        loginRequst();
 
+        //loginRequst();
+        initCenterInfo();
         return activity_login;
     }
 
-    public void test(){
-        tv_login_info.setText("登陆成功");
-        bt_login.setVisibility(View.GONE);
-    }
+
 
 
 
@@ -147,7 +143,54 @@ public class MyCenterFragment extends Fragment{
 
 
 
-    public void loginRequst() {
+    public void initCenterInfo(){
+
+
+
+        StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.findUserByMobile, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject json = new JSONObject(s);
+                    String result = json.getString("result");
+                    String mobile = json.getString("mobile");
+                    if ("1".equals(result)) {
+                        tv_login_info.setText("用户:"+mobile+",token校验通过,成功的进入个人中心页面");
+                        Toast.makeText(getActivity().getApplicationContext(), "sucssess", Toast.LENGTH_SHORT).show();
+                    }else {
+                        startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getActivity().getApplicationContext(), "网络不太给力啊", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                UserInfo userInfo = SharePrefUtil.getUserInfo(getActivity().getApplicationContext());
+                if(userInfo.getToken()!=null){
+                    map.put("token",userInfo.getToken());
+                }
+                if(userInfo.getMobile()!=null){
+                    map.put("mobile",userInfo.getMobile() );
+                }
+                return map;
+            }
+        };
+        requestQueue.add(findUserByMobile);
+    }
+
+
+
+
+
+   /* public void loginRequst() {
         //tv_login_info.setText("登陆成功");
         //mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
         StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host+ Constants.loginValidate, new Response.Listener<String>() {
@@ -163,8 +206,8 @@ public class MyCenterFragment extends Fragment{
                     } else if (result.equals("3")) {
                         Toast.makeText(getActivity(), "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                     } else if (result.equals("1")) {
-                        /*Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
-                        startActivity(intent);*/
+                        *//*Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
+                        startActivity(intent);*//*
                         tv_login_info.setText("自动登陆成功");
                         //bt_login.setVisibility(View.GONE);
                     } else {
@@ -191,7 +234,7 @@ public class MyCenterFragment extends Fragment{
             }
         };
         requestQueue.add(sr);
-    }
+    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

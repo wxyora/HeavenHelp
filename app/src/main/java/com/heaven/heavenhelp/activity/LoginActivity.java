@@ -30,8 +30,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
+import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
 import com.heaven.heavenhelp.utils.ValidationUtil;
@@ -149,11 +151,10 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                         }else if(result.equals("3")){
                                             Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                                         }else if(result.equals("1")){
-                                            SharedPreferences loginInfoShare =
-                                                    getSharedPreferences("loginInfo", MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = loginInfoShare.edit();
-                                            editor.putString("token",token);
-                                            editor.commit();
+                                            UserInfo userInfo = new UserInfo();
+                                            userInfo.setToken(token);
+                                            userInfo.setMobile(id_login_mobile.getText().toString().trim());
+                                            SharePrefUtil.updateUserInfo(getApplicationContext(),userInfo);
                                             setResult(0);
                                             finish();
                                         }else{

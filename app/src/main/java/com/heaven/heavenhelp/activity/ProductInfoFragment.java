@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,10 +21,12 @@ import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.ProductInfoAdapter;
 import com.heaven.heavenhelp.model.ProductInfo;
+import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
 import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
+import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 
 import org.json.JSONArray;
@@ -31,7 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductInfoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -129,6 +134,8 @@ public class ProductInfoFragment extends Fragment {
                 mDialog.dismiss();
                 Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
             }
+
+
         });
         requestQueue.add(request);
 

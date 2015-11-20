@@ -43,7 +43,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        fragment2.test();
+
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
         tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
         tv_my_host.setBackgroundColor(Color.GRAY);
@@ -68,12 +68,12 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             @Override
             public void onPageSelected(int position) {
                 if (1 == position) {
-                    fragment2.loginRequst();
+                    fragment2.initCenterInfo();
                     tv_my_host.setBackgroundColor(Color.GRAY);
                     tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
                 }
                 if (0 == position) {
-                    fragment2.loginRequst();
+                    //fragment2.loginRequst();
                     tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
                     tv_buy_vegetable.setBackgroundColor(Color.GRAY);
                 }
