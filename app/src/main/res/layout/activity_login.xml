@@ -12,11 +12,11 @@
     >
 
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:id="@+id/imageView"
-        android:src="@drawable/login_logo" />
+        android:src="@drawable/login_logo" />-->
 
     <LinearLayout
         android:orientation="vertical"
@@ -66,9 +66,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="登陆"
 
@@ -78,30 +78,44 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="#000000" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="创建"
-            android:id="@+id/bt_register_info"
-            android:background="@drawable/btn_style"
-            android:layout_weight="1"
-            android:textColor="#000000" />
+
     </LinearLayout>
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:id="@+id/ddd" />
+        android:id="@+id/ddd" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="忘记密码？"
-        android:id="@+id/tv_forget_password"
-        android:textSize="12dp"
-        android:layout_gravity="right"
-        android:layout_marginTop="22dp"
-        android:textColor="#000000" />
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="创建账号"
+            android:id="@+id/bt_register_info"
+            android:textSize="12dp"
+            android:layout_marginTop="22dp"
+            android:textColor="#000000" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="忘记密码？"
+            android:id="@+id/tv_forget_password"
+            android:textSize="12dp"
+            android:layout_marginTop="22dp"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
+
+

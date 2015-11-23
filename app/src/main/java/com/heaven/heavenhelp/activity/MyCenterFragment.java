@@ -65,7 +65,7 @@ public class MyCenterFragment extends Fragment{
     private OnFragmentInteractionListener mListener;
     private RequestQueue requestQueue;
     private ToastUtils toastUtils;
-    private Button bt_login;
+    private Button btn_login,btn_personal_setting;
     private TextView tv_login_info;
 
 
@@ -109,11 +109,23 @@ public class MyCenterFragment extends Fragment{
         toastUtils = new ToastUtils(getActivity());
         requestQueue = Volley.newRequestQueue(getActivity());
         //bt_login = (Button)activity_login.findViewById(R.id.bt_login);
+        btn_personal_setting = (Button)activity_login.findViewById(R.id.btn_personal_setting);
         tv_login_info = (TextView)activity_login.findViewById(R.id.tv_login_info);
 
+        btn_login = (Button)activity_login.findViewById(R.id.btn_login);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
+            }
+        });
+        btn_personal_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), Personal_Setting_Activity.class));
+            }
+        });
 
-        //loginRequst();
-        initCenterInfo();
         return activity_login;
     }
 
@@ -139,6 +151,7 @@ public class MyCenterFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        initCenterInfo();
     }
 
 
@@ -155,10 +168,17 @@ public class MyCenterFragment extends Fragment{
                     String result = json.getString("result");
                     String mobile = json.getString("mobile");
                     if ("1".equals(result)) {
-                        tv_login_info.setText("用户:"+mobile+",token校验通过,成功的进入个人中心页面");
-                        Toast.makeText(getActivity().getApplicationContext(), "sucssess", Toast.LENGTH_SHORT).show();
+                        tv_login_info.setText("你好," + mobile+",欢迎登陆性价比");
+                        tv_login_info.setVisibility(View.VISIBLE);
+                        btn_login.setVisibility(View.GONE);
+                        btn_personal_setting.setVisibility(View.VISIBLE);
+                        //Toast.makeText(getActivity().getApplicationContext(), "token校验通过", Toast.LENGTH_SHORT).show();
                     }else {
-                        startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
+                        tv_login_info.setVisibility(View.GONE);
+                        btn_login.setVisibility(View.VISIBLE);
+                        btn_personal_setting.setVisibility(View.GONE);
+                        //tv_login_info.setText("用户:" + mobile + ",没有登陆状态");
+                        //startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -186,55 +206,6 @@ public class MyCenterFragment extends Fragment{
         requestQueue.add(findUserByMobile);
     }
 
-
-
-
-
-   /* public void loginRequst() {
-        //tv_login_info.setText("登陆成功");
-        //mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
-        StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host+ Constants.loginValidate, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-               // mDialog.dismiss();
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    String result = jsonObject.getString("result");
-                    if (result.equals("0")) {
-                        Toast.makeText(getActivity(), "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
-
-                    } else if (result.equals("3")) {
-                        Toast.makeText(getActivity(), "请核对用户名和密码", Toast.LENGTH_SHORT).show();
-                    } else if (result.equals("1")) {
-                        *//*Intent intent = new Intent(getActivity(), LoginSuccessActivity.class);
-                        startActivity(intent);*//*
-                        tv_login_info.setText("自动登陆成功");
-                        //bt_login.setVisibility(View.GONE);
-                    } else {
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
-                //mDialog.dismiss();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                //后续换成token
-                map.put("mobile", "15901966196");
-                map.put("password", "123456");
-                return map;
-            }
-        };
-        requestQueue.add(sr);
-    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

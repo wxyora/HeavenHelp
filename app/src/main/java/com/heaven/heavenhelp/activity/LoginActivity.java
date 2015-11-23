@@ -46,14 +46,14 @@ import java.util.Map;
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private Button bt_login_submit, bt_register_info;
+    private Button bt_login_submit;
     private RequestQueue requestQueue;
     private EditText id_login_mobile, id_login_password;
     private ToastUtils toastUtils;
     private CheckBox remember_user_info;
     private ProgressBar mProgressBar;
     private Dialog mDialog;
-    private TextView tv_forget_password;
+    private TextView tv_forget_password,bt_register_info;
 
 
     @Override
@@ -65,7 +65,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         toastUtils = new ToastUtils(this);
         requestQueue = Volley.newRequestQueue(this);
         bt_login_submit = (Button) findViewById(R.id.bt_login_submit);
-        bt_register_info = (Button) findViewById(R.id.bt_register_info);
+        bt_register_info = (TextView) findViewById(R.id.bt_register_info);
         id_login_mobile = (EditText) findViewById(R.id.id_login_mobile);
         id_login_password = (EditText) findViewById(R.id.id_login_password);
         remember_user_info = (CheckBox)findViewById(R.id.remember_user_info);
@@ -154,8 +154,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                             UserInfo userInfo = new UserInfo();
                                             userInfo.setToken(token);
                                             userInfo.setMobile(id_login_mobile.getText().toString().trim());
-                                            SharePrefUtil.updateUserInfo(getApplicationContext(),userInfo);
-                                            setResult(0);
+                                            SharePrefUtil.updateUserInfo(getApplicationContext(), userInfo);
+                                            //setResult(0);
                                             finish();
                                         }else{
 

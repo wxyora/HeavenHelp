@@ -3,16 +3,17 @@
 
     <string name="hello_world">您已经注册成功并登陆，只是我们什么内容都没有，不好意思。</string>
     <string name="action_settings">设置选项</string>
-    <string name="title_activity_login">注册-性价比</string>
+    <string name="title_activity_login">注册</string>
     <string name="title_activity_login_success">我发布的产品</string>
     <string name="hello">Hello World, AnimRoundProcessDialog!</string>
     <string name="anim">动画</string>
     <string name="color">颜色</string>
     <string name="icon">图片</string>
     <string name="title_activity_find_password">FindPasswordActivity</string>
-    <string name="title_activity_index">附近的菜店</string>
+    <string name="title_activity_index">竞价平台</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_personal__setting_">Personal_Setting_Activity</string>
 </resources>

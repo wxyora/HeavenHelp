@@ -2,13 +2,12 @@ package com.heaven.heavenhelp.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,13 +17,14 @@ import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener{
 
     ViewPager pag=null;
     private ArrayList<Fragment> fragmentList=null;
     private TextView tv_my_host,tv_buy_vegetable;
+    private ActionBar actionBar;
 
 
     @Override
@@ -34,6 +34,10 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         pag=(ViewPager)this.findViewById(R.id.id_viewPager);
         tv_my_host =(TextView)findViewById(R.id.tv_my_host);
         tv_buy_vegetable = (TextView)findViewById(R.id.tv_buy_vegetable);
+        actionBar = getSupportActionBar();
+        //actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setTitle("首页");
+
         initViewpager();
 
     }
@@ -43,10 +47,10 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
         tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
         tv_my_host.setBackgroundColor(Color.GRAY);
+
     }
     private void initViewpager(){
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
@@ -58,7 +62,6 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         fragmentList.add(fragment2);
         pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
         Intent intent = getIntent();
-        String loginSuccess = intent.getStringExtra("loginSuccess");
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -71,11 +74,13 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
                     fragment2.initCenterInfo();
                     tv_my_host.setBackgroundColor(Color.GRAY);
                     tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
+                    actionBar.setTitle("个人中心");
                 }
                 if (0 == position) {
                     //fragment2.loginRequst();
                     tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
                     tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+                    actionBar.setTitle("首页");
                 }
             }
 
@@ -91,6 +96,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
                 pag.setCurrentItem(1);
                 tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
                 tv_my_host.setBackgroundColor(Color.GRAY);
+
             }
 
         });
@@ -101,6 +107,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
                 pag.setCurrentItem(0);
                 tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
                 tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+
             }
 
         });
@@ -110,7 +117,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_index, menu);
+        //getMenuInflater().inflate(R.menu.menu_index, menu);
         return true;
     }
 

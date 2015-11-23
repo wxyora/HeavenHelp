@@ -28,9 +28,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
     compile files('libs/MobTools.jar')
     compile files('libs/Volley.jar')
     compile files('libs/SMSSDK-1.3.0.jar')
     compile files('libs/MobLogCollector.jar')
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
 }
