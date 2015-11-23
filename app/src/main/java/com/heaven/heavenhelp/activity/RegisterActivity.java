@@ -22,7 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.utils.Constants;
+import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
 import com.heaven.heavenhelp.utils.ValidationUtil;
@@ -110,10 +112,13 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
                                 try {
                                     JSONObject json = new JSONObject(s);
                                     String result = json.getString("result");
-                                    if ("1".equals(result)) {
-                                        Intent intent = new Intent(RegisterActivity.this, LoginSuccessActivity.class);
+                                    if ("1".equals(result)){
+                                        UserInfo userInfo = new UserInfo();
+                                        userInfo.setToken(json.getString("token"));
+                                        userInfo.setMobile(json.getString("mobile"));
+                                        SharePrefUtil.updateUserInfo(getApplicationContext(), userInfo);
+                                        Intent intent = new Intent(RegisterActivity.this, IndexActivity.class);
                                         startActivity(intent);
-                                        finish();
                                     } else if ("0".equals(result)) {
                                         Toast.makeText(RegisterActivity.this, "系统异常", Toast.LENGTH_SHORT).show();
                                     } else if ("2".equals(result)) {

@@ -145,12 +145,13 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         String result = jsonObject.getString("result");
-                                        String token = jsonObject.getString("token");
+
                                         if(result.equals("0")){
                                             Toast.makeText(LoginActivity.this, "该用户不存在，请注册", Toast.LENGTH_SHORT).show();
                                         }else if(result.equals("3")){
                                             Toast.makeText(LoginActivity.this, "请核对用户名和密码", Toast.LENGTH_SHORT).show();
                                         }else if(result.equals("1")){
+                                            String token = jsonObject.getString("token");
                                             UserInfo userInfo = new UserInfo();
                                             userInfo.setToken(token);
                                             userInfo.setMobile(id_login_mobile.getText().toString().trim());
