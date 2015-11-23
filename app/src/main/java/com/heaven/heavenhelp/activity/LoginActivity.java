@@ -68,15 +68,15 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         bt_register_info = (TextView) findViewById(R.id.bt_register_info);
         id_login_mobile = (EditText) findViewById(R.id.id_login_mobile);
         id_login_password = (EditText) findViewById(R.id.id_login_password);
-        remember_user_info = (CheckBox)findViewById(R.id.remember_user_info);
+        //remember_user_info = (CheckBox)findViewById(R.id.remember_user_info);
         tv_forget_password = (TextView) findViewById(R.id.tv_forget_password);
         bt_login_submit.setOnClickListener(this);
         bt_register_info.setOnClickListener(this);
         tv_forget_password.setOnClickListener(this);
         SharedPreferences sharedPreferences =
                 getSharedPreferences("loginInfo", MODE_PRIVATE);
-        id_login_mobile.setText(sharedPreferences.getString("loginName", null));
-        id_login_password.setText(sharedPreferences.getString("loginPwd", null));
+        id_login_mobile.setText(SharePrefUtil.getUserInfo(getApplicationContext()).getMobile());
+        //id_login_password.setText(sharedPreferences.getString("loginPwd", null));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 SharedPreferences.Editor editor = loginInfoShare.edit();
                 String loginName = id_login_mobile.getText().toString();
                 String loginPwd = id_login_password.getText().toString();
-                boolean checked = remember_user_info.isChecked();
+                //boolean checked = remember_user_info.isChecked();
 
 
                 if(TextUtils.isEmpty(id_login_mobile.getText().toString())){
@@ -126,7 +126,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             toastUtils.showToastShort("密码长度不能小于4位");
                         }else{
 
-                            if (checked) {
+                           /* if (checked) {
                                 if (checked) {
                                     editor.putString("loginName", loginName);
                                     editor.putString("loginPwd", loginPwd);
@@ -135,7 +135,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                             } else {
                                 editor.clear();
                                 editor.commit();
-                            }
+                            }*/
 
                             mDialog = LoadProcessDialog.showRoundProcessDialog(this,R.layout.loading_process_dialog_color);
                             StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.loginValidate, new Response.Listener<String>() {

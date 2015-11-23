@@ -54,13 +54,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
 
-        <CheckBox
+       <!-- <CheckBox
             android:id="@+id/remember_user_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="记住用户名和密码"
             android:checked="true"
-            />
+            />-->
     </LinearLayout>
 
     <LinearLayout
