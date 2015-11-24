@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,9 @@ public class ProductInfoFragment extends Fragment {
     PullToRefreshListView newsListView;
     RequestQueue requestQueue;
     Dialog mDialog;
+    List<ProductInfo> productInfos = new ArrayList<ProductInfo>();
+    ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
+    private int pageNo = 0;
 
 
     /**
@@ -94,54 +98,11 @@ public class ProductInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View product_info = inflater.inflate(R.layout.fragment_product_info, container, false);
-
-
         newsListView = (PullToRefreshListView) product_info.findViewById(R.id.pull_to_refresh_text);
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
-        requestQueue = Volley.newRequestQueue(getActivity());
-
-
-        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
-        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                List<ProductInfo> productInfos = new ArrayList<ProductInfo>();
-                try {
-                    JSONArray jsonArray = new JSONArray(s.toString());
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        ProductInfo productInfo = new ProductInfo();
-                        final Object o = jsonArray.get(i);
-                        final JSONObject jsonObject = new JSONObject(o.toString());
-                        final String productName = jsonObject.getString("productName");
-                        final String productPrice = jsonObject.getString("productPrice");
-                        productInfo.setProductName(productName);
-                        productInfo.setProductPrice(productPrice + " RMB");
-                        productInfos.add(productInfo);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
-                newsListView.setAdapter(productInfoAdapter);
-                mDialog.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                mDialog.dismiss();
-                Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
-            }
-
-
-        });
-        requestQueue.add(request);
-
-
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
-
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 new AsyncTask<Void, Void, Void>() {
@@ -149,8 +110,11 @@ public class ProductInfoFragment extends Fragment {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
-                            //mDialog.show();
-                            requestQueue.add(request);
+                            pageNo = 1;
+                            List<ProductInfo> productInfos = getData();
+                            productInfos.clear();
+                            productInfos.addAll(productInfos);
+                            productInfoAdapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -173,8 +137,10 @@ public class ProductInfoFragment extends Fragment {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
-                            Thread.sleep(0);
-                        } catch (InterruptedException e) {
+                            pageNo++;
+                            List<ProductInfo> productInfos = getData();
+                            productInfos.addAll(productInfos);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         return null;
@@ -190,6 +156,54 @@ public class ProductInfoFragment extends Fragment {
         });
 
         return product_info;
+    }
+
+    private List<ProductInfo> getData() {
+        requestQueue = Volley.newRequestQueue(getActivity());
+        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
+        final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+                try {
+                    JSONArray jsonArray = new JSONArray(s.toString());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        ProductInfo productInfo = new ProductInfo();
+                        final Object o = jsonArray.get(i);
+                        final JSONObject jsonObject = new JSONObject(o.toString());
+                        final String productName = jsonObject.getString("productName");
+                        final String productPrice = jsonObject.getString("productPrice");
+                        productInfo.setProductName(productName);
+                        productInfo.setProductPrice(productPrice + " RMB");
+                        productInfos.add(productInfo);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                newsListView.setAdapter(productInfoAdapter);
+                productInfoAdapter.notifyDataSetChanged();
+                mDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                mDialog.dismiss();
+                Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("pageNo",String.valueOf(pageNo));
+                return map;
+            }
+        };;
+        requestQueue.add(request);
+        return productInfos;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

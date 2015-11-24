@@ -29,7 +29,7 @@ public class ProductInfoAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return (products == null) ? 0 : 10;
+        return (products == null) ? 0 : products.size();
     }
 
     @Override
