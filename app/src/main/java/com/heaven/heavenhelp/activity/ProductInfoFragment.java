@@ -95,7 +95,7 @@ public class ProductInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View product_info = inflater.inflate(R.layout.activity_login_success, container, false);
+        View product_info = inflater.inflate(R.layout.fragment_product_info, container, false);
 
 
         newsListView = (PullToRefreshListView) product_info.findViewById(R.id.pull_to_refresh_text);
