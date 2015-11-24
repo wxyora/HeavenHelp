@@ -103,7 +103,7 @@ public class ProductInfoFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(getActivity());
 
 
-        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_anim);
+        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
         final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -141,6 +141,7 @@ public class ProductInfoFragment extends Fragment {
 
 
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 new AsyncTask<Void, Void, Void>() {
@@ -148,6 +149,7 @@ public class ProductInfoFragment extends Fragment {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
+                            //mDialog.show();
                             requestQueue.add(request);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -157,6 +159,7 @@ public class ProductInfoFragment extends Fragment {
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
+                        //mDialog.dismiss();
                         newsListView.onRefreshComplete();
                         super.onPostExecute(aVoid);
                     }

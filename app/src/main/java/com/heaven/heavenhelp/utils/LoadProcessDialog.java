@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.KeyEvent;
 
+import com.heaven.heavenhelp.R;
+
 /**
  * Created by Acer-002 on 2015/9/6.
  */
@@ -27,7 +29,7 @@ public  class LoadProcessDialog {
             }
         };
 
-        Dialog mDialog = new AlertDialog.Builder(mContext).create();
+        Dialog mDialog = new AlertDialog.Builder(mContext, R.style.CustomDialog).create();
         mDialog.setOnKeyListener(keyListener);
         mDialog.show();
         mDialog.setContentView(layout);

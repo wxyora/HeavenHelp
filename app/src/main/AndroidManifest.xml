@@ -37,9 +37,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"></activity>
-        <activity
-            android:name=".activity.LoginSuccessActivity"
-            android:label="@string/title_activity_login_success"></activity>
+
         <activity
             android:name=".activity.FindPasswordActivity"
             android:label="@string/title_activity_find_password"></activity>
@@ -49,7 +47,9 @@
         <activity
             android:name=".activity.Personal_Setting_Activity"
             android:label="设置选项">
-           </activity>
+        </activity>
+
+
     </application>
 
 </manifest>
