@@ -222,7 +222,7 @@ public class ProductInfoFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                //mDialog.dismiss();
+                mDialog.dismiss();
                 Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
             }
         }){
