@@ -129,10 +129,17 @@ public class ProductInfoFragment extends Fragment {
         productInfos = new ArrayList<ProductInfo>();
         productInfoList  =new ArrayList<ProductInfo>();
         productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfoList);
-
         newsListView.setAdapter(productInfoAdapter);
-
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
+        newsListView.setScrollingWhileRefreshingEnabled(false);
+
+        newsListView.setPullToRefreshOverScrollEnabled(false);
+        //初始化页面数据
+        handler.sendEmptyMessage(0);
+        productInfos.clear();
+        getData();
+
+
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {

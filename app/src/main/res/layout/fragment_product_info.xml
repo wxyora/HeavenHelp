@@ -20,7 +20,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:text="名称"
-            android:textColor="#0026ff"
             android:textSize="15dp" />
 
         <TextView
@@ -30,7 +29,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:text="价格"
-            android:textColor="#1500fe"
             android:textSize="15dp" />
     </LinearLayout>
 

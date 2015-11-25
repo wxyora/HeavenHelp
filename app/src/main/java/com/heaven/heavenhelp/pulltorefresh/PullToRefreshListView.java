@@ -63,6 +63,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		return Orientation.VERTICAL;
 	}
 
+
 	@Override
 	protected void onRefreshing(final boolean doScroll) {
 		/**
