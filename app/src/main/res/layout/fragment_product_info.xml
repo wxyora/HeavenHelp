@@ -7,6 +7,33 @@
     android:orientation="vertical"
     tools:context="com.heaven.heavenhelp.activity.ProductInfoFragment">
 
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_product_name"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="名称"
+            android:textColor="#0026ff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_product_price"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="价格"
+            android:textColor="#1500fe"
+            android:textSize="15dp" />
+    </LinearLayout>
+
     <com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView
         android:id="@+id/pull_to_refresh_text"
         android:layout_width="match_parent"

@@ -57,18 +57,30 @@ public class ProductInfoFragment extends Fragment {
     RequestQueue requestQueue;
     Dialog mDialog;
     List<ProductInfo> productInfos ;
+    List<ProductInfo> productInfoList ;
     ProductInfoAdapter productInfoAdapter;
     private int pageNo = 0;
     Handler handler  = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(productInfoAdapter==null){
-                productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
-                newsListView.setAdapter(productInfoAdapter);
-            }else{
+            if(msg.what==0){
+                mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
+            }else if(msg.what==1){
+               /* if(productInfoAdapter==null){
+                    productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
+                    newsListView.setAdapter(productInfoAdapter);
+                    productInfoAdapter.notifyDataSetChanged();
+                }else{
+                    productInfoAdapter.notifyDataSetChanged();
+                }
+*/
+                productInfoList.clear();
+                productInfoList.addAll(productInfos);
                 productInfoAdapter.notifyDataSetChanged();
+                mDialog.dismiss();
             }
+
         }
     };
 
@@ -112,13 +124,15 @@ public class ProductInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View product_info = inflater.inflate(R.layout.fragment_product_info, container, false);
-        productInfos = new ArrayList<ProductInfo>();
         newsListView = (PullToRefreshListView) product_info.findViewById(R.id.pull_to_refresh_text);
 
+        productInfos = new ArrayList<ProductInfo>();
+        productInfoList  =new ArrayList<ProductInfo>();
+        productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfoList);
 
+        newsListView.setAdapter(productInfoAdapter);
 
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
-
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -127,10 +141,10 @@ public class ProductInfoFragment extends Fragment {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
+                            handler.sendEmptyMessage(0);
                             pageNo = 0;
                             productInfos.clear();
-                            productInfos = getData();
-
+                            getData();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -139,7 +153,6 @@ public class ProductInfoFragment extends Fragment {
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        //mDialog.dismiss();
                         newsListView.onRefreshComplete();
                         super.onPostExecute(aVoid);
                     }
@@ -153,9 +166,9 @@ public class ProductInfoFragment extends Fragment {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
+                            handler.sendEmptyMessage(0);
                             pageNo++;
-                            List<ProductInfo> productInfos = getData();
-                            productInfos.addAll(productInfos);
+                            getData();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -174,9 +187,8 @@ public class ProductInfoFragment extends Fragment {
         return product_info;
     }
 
-    private List<ProductInfo> getData() {
+    private void getData() {
         requestQueue = Volley.newRequestQueue(getActivity());
-        //mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
         final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -214,9 +226,8 @@ public class ProductInfoFragment extends Fragment {
                 return map;
             }
         };
-        ;
         requestQueue.add(request);
-        return productInfos;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

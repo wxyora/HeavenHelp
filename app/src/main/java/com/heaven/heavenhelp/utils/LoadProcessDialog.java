@@ -32,6 +32,7 @@ public  class LoadProcessDialog {
         Dialog mDialog = new AlertDialog.Builder(mContext, R.style.CustomDialog).create();
         mDialog.setOnKeyListener(keyListener);
         mDialog.show();
+        mDialog.setCancelable(false);
         mDialog.setContentView(layout);
         return mDialog;
     }
