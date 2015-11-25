@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,10 +56,21 @@ public class ProductInfoFragment extends Fragment {
     PullToRefreshListView newsListView;
     RequestQueue requestQueue;
     Dialog mDialog;
-    List<ProductInfo> productInfos = new ArrayList<ProductInfo>();
-    ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
+    List<ProductInfo> productInfos ;
+    ProductInfoAdapter productInfoAdapter;
     private int pageNo = 0;
-
+    Handler handler  = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(productInfoAdapter==null){
+                productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
+                newsListView.setAdapter(productInfoAdapter);
+            }else{
+                productInfoAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     /**
      * Use this factory method to create a new instance of
@@ -98,10 +111,14 @@ public class ProductInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View product_info = inflater.inflate(R.layout.fragment_product_info, container, false);
+        productInfos = new ArrayList<ProductInfo>();
         newsListView = (PullToRefreshListView) product_info.findViewById(R.id.pull_to_refresh_text);
+
+
+
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
+
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -110,11 +127,10 @@ public class ProductInfoFragment extends Fragment {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
-                            pageNo = 1;
-                            List<ProductInfo> productInfos = getData();
+                            pageNo = 0;
                             productInfos.clear();
-                            productInfos.addAll(productInfos);
-                            productInfoAdapter.notifyDataSetChanged();
+                            productInfos = getData();
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -160,7 +176,7 @@ public class ProductInfoFragment extends Fragment {
 
     private List<ProductInfo> getData() {
         requestQueue = Volley.newRequestQueue(getActivity());
-        mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
+        //mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
         final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -177,23 +193,19 @@ public class ProductInfoFragment extends Fragment {
                         productInfo.setProductPrice(productPrice + " RMB");
                         productInfos.add(productInfo);
                     }
+                    handler.sendEmptyMessage(1);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                newsListView.setAdapter(productInfoAdapter);
-                productInfoAdapter.notifyDataSetChanged();
-                mDialog.dismiss();
+               // mDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                mDialog.dismiss();
+                //mDialog.dismiss();
                 Toast.makeText(getActivity(), "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
             }
-
-
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -201,7 +213,8 @@ public class ProductInfoFragment extends Fragment {
                 map.put("pageNo",String.valueOf(pageNo));
                 return map;
             }
-        };;
+        };
+        ;
         requestQueue.add(request);
         return productInfos;
     }
