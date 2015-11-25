@@ -6,12 +6,12 @@
     >
 
 
-    <android.support.v4.view.ViewPager
+    <com.heaven.heavenhelp.utils.CustomViewPager
         android:id="@+id/id_viewPager"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        ></android.support.v4.view.ViewPager>
+        ></com.heaven.heavenhelp.utils.CustomViewPager>
 
     <LinearLayout
         android:orientation="horizontal"

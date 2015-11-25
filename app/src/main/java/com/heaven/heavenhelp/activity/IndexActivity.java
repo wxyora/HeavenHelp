@@ -15,13 +15,14 @@ import android.widget.TextView;
 
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
+import com.heaven.heavenhelp.utils.CustomViewPager;
 
 import java.util.ArrayList;
 
 
 public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener{
 
-    ViewPager pag=null;
+    CustomViewPager pag=null;
     private ArrayList<Fragment> fragmentList=null;
     private TextView tv_my_host,tv_buy_vegetable;
     private ActionBar actionBar;
@@ -31,7 +32,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
-        pag=(ViewPager)this.findViewById(R.id.id_viewPager);
+        pag=(CustomViewPager)this.findViewById(R.id.id_viewPager);
         tv_my_host =(TextView)findViewById(R.id.tv_my_host);
         tv_buy_vegetable = (TextView)findViewById(R.id.tv_buy_vegetable);
         actionBar = getSupportActionBar();
