@@ -1,9 +1,12 @@
 package com.heaven.heavenhelp.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,6 +29,7 @@ import com.heaven.heavenhelp.activity.Personal_Setting_Activity;
 import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.utils.BaseFragment;
 import com.heaven.heavenhelp.utils.Constants;
+import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
@@ -58,7 +62,21 @@ public class MyCenterFragment extends BaseFragment{
     private ToastUtils toastUtils;
     private Button btn_login,btn_personal_setting;
     private TextView tv_login_info;
+    Dialog mDialog;
 
+    Handler handler  = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what==0){
+                mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
+            }else if(msg.what==1){
+                //结束加载动画
+                mDialog.dismiss();
+            }
+
+        }
+    };
 
     /**
      * Use this factory method to create a new instance of
@@ -122,6 +140,7 @@ public class MyCenterFragment extends BaseFragment{
 
     @Override
     public void lazyLoad() {
+        handler.sendEmptyMessage(0);
         initCenterInfo();
     }
 
@@ -161,18 +180,17 @@ public class MyCenterFragment extends BaseFragment{
                     String result = json.getString("result");
                     String mobile = json.getString("mobile");
                     if ("1".equals(result)) {
-                        tv_login_info.setText("你好," + mobile+",欢迎登陆性价比");
+                        tv_login_info.setText("你好," + mobile + ",欢迎登录");
                         tv_login_info.setVisibility(View.VISIBLE);
                         btn_login.setVisibility(View.GONE);
                         btn_personal_setting.setVisibility(View.VISIBLE);
-                        //Toast.makeText(getActivity().getApplicationContext(), "token校验通过", Toast.LENGTH_SHORT).show();
+
                     }else {
                         tv_login_info.setVisibility(View.GONE);
                         btn_login.setVisibility(View.VISIBLE);
                         btn_personal_setting.setVisibility(View.GONE);
-                        //tv_login_info.setText("用户:" + mobile + ",没有登陆状态");
-                        //startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
                     }
+                    handler.sendEmptyMessage(1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -180,6 +198,7 @@ public class MyCenterFragment extends BaseFragment{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                mDialog.dismiss();
                 Toast.makeText(getActivity().getApplicationContext(), "网络不太给力啊", Toast.LENGTH_SHORT).show();
             }
         }) {

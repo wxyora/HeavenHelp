@@ -67,13 +67,9 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
-        //tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
-        //tv_my_host.setBackgroundColor(Color.GRAY);
-
     }
     private void initViewpager(){
-        final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
+      
         fragment1 = ProductInfoFragment.newInstance("index","1");
         fragment2 = NearInfoFragment.newInstance("near","2");
         fragment3 = OrderInfoFragment.newInstance("order","3");
@@ -88,36 +84,29 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                System.out.print(position);
+               // System.out.print(position);
             }
 
             @Override
             public void onPageSelected(int position) {
                 if (0 == position) {
-
                     actionBar.setTitle("首页");
-
+                    //fragment1.lazyLoad();
                 }
                 if (1 == position) {
-
-
                     actionBar.setTitle("附近");
                 }
                 if (2 == position) {
-
-
                     actionBar.setTitle("订单");
                 }
                 if (3 == position) {
-                    fragment4.lazyLoad();
-
                     actionBar.setTitle("个人中心");
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                System.out.print(state);
+                //System.out.print(state);
             }
         });
 
@@ -125,9 +114,6 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             @Override
             public void onClick(View view) {
                 pag.setCurrentItem(0,false);
-
-                // tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
-                //tv_my_host.setBackgroundColor(Color.GRAY);
 
             }
 
@@ -137,9 +123,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             @Override
             public void onClick(View view) {
                 pag.setCurrentItem(1,false);
-                //tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
-                //tv_buy_vegetable.setBackgroundColor(Color.GRAY);
-
+ 
             }
 
         });
@@ -148,9 +132,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             @Override
             public void onClick(View view) {
                 pag.setCurrentItem(2,false);
-                //tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
-                //tv_buy_vegetable.setBackgroundColor(Color.GRAY);
-
+   
             }
 
         });
@@ -159,8 +141,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             @Override
             public void onClick(View view) {
                 pag.setCurrentItem(3,false);
-                //tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
-                //tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+     
 
             }
 

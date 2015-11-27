@@ -25,6 +25,7 @@ import com.heaven.heavenhelp.adapter.ProductInfoAdapter;
 import com.heaven.heavenhelp.model.ProductInfo;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
+import com.heaven.heavenhelp.utils.BaseFragment;
 import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
@@ -38,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductInfoFragment extends Fragment {
+public class ProductInfoFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,31 +65,18 @@ public class ProductInfoFragment extends Fragment {
             if(msg.what==0){
                 mDialog = LoadProcessDialog.showRoundProcessDialog(getActivity(), R.layout.loading_process_dialog_color);
             }else if(msg.what==1){
-               /* if(productInfoAdapter==null){
-                    productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfos);
-                    newsListView.setAdapter(productInfoAdapter);
-                    productInfoAdapter.notifyDataSetChanged();
-                }else{
-                    productInfoAdapter.notifyDataSetChanged();
-                }
-*/
+
                 productInfoList.clear();
                 productInfoList.addAll(productInfos);
                 productInfoAdapter.notifyDataSetChanged();
+                //结束加载动画
                 mDialog.dismiss();
             }
 
         }
     };
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProductInfoFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static ProductInfoFragment newInstance(String param1, String param2) {
         ProductInfoFragment fragment = new ProductInfoFragment();
@@ -102,6 +90,8 @@ public class ProductInfoFragment extends Fragment {
     public ProductInfoFragment() {
         // Required empty public constructor
     }
+
+
 
     @Override
     public void onResume() {
@@ -123,20 +113,12 @@ public class ProductInfoFragment extends Fragment {
         View product_info = inflater.inflate(R.layout.fragment_product_info, container, false);
         newsListView = (PullToRefreshListView) product_info.findViewById(R.id.pull_to_refresh_text);
 
-        productInfos = new ArrayList<ProductInfo>();
         productInfoList  =new ArrayList<ProductInfo>();
         productInfoAdapter = new ProductInfoAdapter(getActivity(), productInfoList);
         newsListView.setAdapter(productInfoAdapter);
         newsListView.setMode(PullToRefreshBase.Mode.BOTH);
         newsListView.setScrollingWhileRefreshingEnabled(false);
-
         newsListView.setPullToRefreshOverScrollEnabled(false);
-        //初始化页面数据
-        handler.sendEmptyMessage(0);
-        productInfos.clear();
-        getData();
-
-
         newsListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -191,6 +173,16 @@ public class ProductInfoFragment extends Fragment {
         return product_info;
     }
 
+    @Override
+    public void lazyLoad() {
+        //初始化页面数据
+        productInfos = new ArrayList<ProductInfo>();
+        //加载动画
+        handler.sendEmptyMessage(0);
+        productInfos.clear();
+        getData();
+    }
+
     private void getData() {
         requestQueue = Volley.newRequestQueue(getActivity());
         final StringRequestUtil request = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.getProductInfo, new Response.Listener<String>() {
@@ -214,7 +206,6 @@ public class ProductInfoFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-               // mDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
