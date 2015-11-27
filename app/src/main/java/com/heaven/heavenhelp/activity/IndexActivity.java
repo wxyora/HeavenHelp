@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
+import com.heaven.heavenhelp.fragment.MyCenterFragment;
+import com.heaven.heavenhelp.fragment.ProductInfoFragment;
 import com.heaven.heavenhelp.utils.CustomViewPager;
 
 import java.util.ArrayList;
@@ -27,6 +29,11 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     private TextView tv_my_host,tv_buy_vegetable;
     private ActionBar actionBar;
 
+    ProductInfoFragment fragment1;
+    MyCenterFragment fragment4;
+
+    MyFragmentPagerAdapter myFragmentAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +45,17 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         actionBar = getSupportActionBar();
         //actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setTitle("首页");
-
         initViewpager();
 
     }
-    ProductInfoFragment fragment1;
-     MyCenterFragment fragment2;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(pag.getCurrentItem()==1){
+            fragment4.lazyLoad();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -55,13 +67,15 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     }
     private void initViewpager(){
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
-        fragment1 = ProductInfoFragment.newInstance("123","qwe");
-         fragment2 = MyCenterFragment.newInstance("345", "qwe");
+        fragment1 = ProductInfoFragment.newInstance("index","qwe");
+        fragment4 = MyCenterFragment.newInstance("center", "qwe");
+
         tv_buy_vegetable.setBackgroundColor(Color.GRAY);
         fragmentList=new ArrayList<Fragment>();
         fragmentList.add(fragment1);
-        fragmentList.add(fragment2);
-        pag.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
+        fragmentList.add(fragment4);
+        myFragmentAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
+        pag.setAdapter(myFragmentAdapter);
         Intent intent = getIntent();
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -72,7 +86,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             @Override
             public void onPageSelected(int position) {
                 if (1 == position) {
-                    fragment2.initCenterInfo();
+                    fragment4.initCenterInfo();
                     tv_my_host.setBackgroundColor(Color.GRAY);
                     tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
                     actionBar.setTitle("个人中心");

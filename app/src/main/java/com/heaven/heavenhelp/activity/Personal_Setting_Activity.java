@@ -1,5 +1,6 @@
 package com.heaven.heavenhelp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,7 +30,8 @@ public class Personal_Setting_Activity extends ActionBarActivity {
             public void onClick(View view) {
                 UserInfo userInfo = SharePrefUtil.getUserInfo(getApplicationContext());
                 userInfo.setToken("");
-                SharePrefUtil.updateUserInfo(getApplicationContext(),userInfo);
+                SharePrefUtil.updateUserInfo(getApplicationContext(), userInfo);
+                startActivity(new Intent(Personal_Setting_Activity.this, IndexActivity.class));
                 finish();
             }
         });

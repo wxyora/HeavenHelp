@@ -157,6 +157,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                                             userInfo.setMobile(id_login_mobile.getText().toString().trim());
                                             SharePrefUtil.updateUserInfo(getApplicationContext(), userInfo);
                                             //setResult(0);
+                                            startActivity(new Intent(LoginActivity.this,IndexActivity.class));
                                             finish();
                                         }else{
 

@@ -1,4 +1,4 @@
-package com.heaven.heavenhelp.activity;
+package com.heaven.heavenhelp.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -23,19 +23,16 @@ import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.ProductInfoAdapter;
 import com.heaven.heavenhelp.model.ProductInfo;
-import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshBase;
 import com.heaven.heavenhelp.pulltorefresh.PullToRefreshListView;
 import com.heaven.heavenhelp.utils.Constants;
 import com.heaven.heavenhelp.utils.LoadProcessDialog;
-import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

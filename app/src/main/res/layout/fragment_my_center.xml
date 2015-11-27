@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/id_my_center"
-    tools:context="com.heaven.heavenhelp.activity.MyCenterFragment">
+    tools:context=".fragment.MyCenterFragment">
 
 
 

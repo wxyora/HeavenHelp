@@ -1,23 +1,15 @@
-package com.heaven.heavenhelp.activity;
+package com.heaven.heavenhelp.fragment;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,21 +21,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.activity.LoginActivity;
+import com.heaven.heavenhelp.activity.Personal_Setting_Activity;
 import com.heaven.heavenhelp.model.UserInfo;
+import com.heaven.heavenhelp.utils.BaseFragment;
 import com.heaven.heavenhelp.utils.Constants;
-import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
 import com.heaven.heavenhelp.utils.ToastUtils;
-import com.heaven.heavenhelp.utils.ValidationUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import cn.smssdk.SMSSDK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,7 +44,7 @@ import cn.smssdk.SMSSDK;
  * Use the {@link MyCenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCenterFragment extends Fragment{
+public class MyCenterFragment extends BaseFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -129,7 +120,10 @@ public class MyCenterFragment extends Fragment{
         return activity_login;
     }
 
-
+    @Override
+    public void lazyLoad() {
+        initCenterInfo();
+    }
 
 
 
@@ -151,7 +145,6 @@ public class MyCenterFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        initCenterInfo();
     }
 
 
