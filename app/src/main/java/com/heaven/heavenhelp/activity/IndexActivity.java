@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.adapter.MyFragmentPagerAdapter;
 import com.heaven.heavenhelp.fragment.MyCenterFragment;
+import com.heaven.heavenhelp.fragment.NearInfoFragment;
+import com.heaven.heavenhelp.fragment.OrderInfoFragment;
 import com.heaven.heavenhelp.fragment.ProductInfoFragment;
 import com.heaven.heavenhelp.utils.CustomViewPager;
 
@@ -28,10 +30,10 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     private ArrayList<Fragment> fragmentList=null;
     private TextView tv_my_host,tv_buy_vegetable;
     private ActionBar actionBar;
-
     ProductInfoFragment fragment1;
+    NearInfoFragment fragment2;
+    OrderInfoFragment fragment3;
     MyCenterFragment fragment4;
-
     MyFragmentPagerAdapter myFragmentAdapter;
 
 
@@ -67,16 +69,18 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     }
     private void initViewpager(){
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
-        fragment1 = ProductInfoFragment.newInstance("index","qwe");
-        fragment4 = MyCenterFragment.newInstance("center", "qwe");
-
+        fragment1 = ProductInfoFragment.newInstance("index","");
+        fragment2 = NearInfoFragment.newInstance("near","");
+        fragment3 = OrderInfoFragment.newInstance("order","");
+        fragment4 = MyCenterFragment.newInstance("center","");
         tv_buy_vegetable.setBackgroundColor(Color.GRAY);
         fragmentList=new ArrayList<Fragment>();
         fragmentList.add(fragment1);
+        fragmentList.add(fragment2);
+        fragmentList.add(fragment3);
         fragmentList.add(fragment4);
         myFragmentAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
         pag.setAdapter(myFragmentAdapter);
-        Intent intent = getIntent();
         pag.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -85,17 +89,24 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
 
             @Override
             public void onPageSelected(int position) {
-                if (1 == position) {
-                    fragment4.initCenterInfo();
-                    tv_my_host.setBackgroundColor(Color.GRAY);
-                    tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
-                    actionBar.setTitle("个人中心");
-                }
                 if (0 == position) {
-                    //fragment2.loginRequst();
-                    tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
-                    tv_buy_vegetable.setBackgroundColor(Color.GRAY);
-                    actionBar.setTitle("首页");
+
+                    actionBar.setTitle("首页");;
+                }
+                if (1 == position) {
+
+
+                    actionBar.setTitle("附近");
+                }
+                if (2 == position) {
+
+
+                    actionBar.setTitle("订单");
+                }
+                if (3 == position) {
+                    fragment4.lazyLoad();
+
+                    actionBar.setTitle("个人中心");
                 }
             }
 
@@ -131,19 +142,15 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_index, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
