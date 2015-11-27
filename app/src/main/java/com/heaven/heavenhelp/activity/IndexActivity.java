@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.heaven.heavenhelp.R;
@@ -24,7 +25,7 @@ import com.heaven.heavenhelp.utils.CustomViewPager;
 import java.util.ArrayList;
 
 
-public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener{
+public class IndexActivity extends AppCompatActivity implements ProductInfoFragment.OnFragmentInteractionListener,MyCenterFragment.OnFragmentInteractionListener,NearInfoFragment.OnFragmentInteractionListener,OrderInfoFragment.OnFragmentInteractionListener{
 
     CustomViewPager pag=null;
     private ArrayList<Fragment> fragmentList=null;
@@ -35,6 +36,8 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     OrderInfoFragment fragment3;
     MyCenterFragment fragment4;
     MyFragmentPagerAdapter myFragmentAdapter;
+    LinearLayout ll_index,ll_near,ll_order,ll_center;
+
 
 
     @Override
@@ -42,8 +45,10 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
         pag=(CustomViewPager)this.findViewById(R.id.id_viewPager);
-        tv_my_host =(TextView)findViewById(R.id.tv_my_host);
-        tv_buy_vegetable = (TextView)findViewById(R.id.tv_buy_vegetable);
+        ll_index =(LinearLayout)findViewById(R.id.ll_index);
+        ll_near =(LinearLayout)findViewById(R.id.ll_near);
+        ll_order =(LinearLayout)findViewById(R.id.ll_order);
+        ll_center = (LinearLayout)findViewById(R.id.ll_center);
         actionBar = getSupportActionBar();
         //actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setTitle("首页");
@@ -54,7 +59,7 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(pag.getCurrentItem()==1){
+        if(pag.getCurrentItem()==3){
             fragment4.lazyLoad();
         }
     }
@@ -63,17 +68,16 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
-        tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
-        tv_my_host.setBackgroundColor(Color.GRAY);
+        //tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
+        //tv_my_host.setBackgroundColor(Color.GRAY);
 
     }
     private void initViewpager(){
         final int drawingCacheBackgroundColor = pag.getDrawingCacheBackgroundColor();
-        fragment1 = ProductInfoFragment.newInstance("index","");
-        fragment2 = NearInfoFragment.newInstance("near","");
-        fragment3 = OrderInfoFragment.newInstance("order","");
-        fragment4 = MyCenterFragment.newInstance("center","");
-        tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+        fragment1 = ProductInfoFragment.newInstance("index","1");
+        fragment2 = NearInfoFragment.newInstance("near","2");
+        fragment3 = OrderInfoFragment.newInstance("order","3");
+        fragment4 = MyCenterFragment.newInstance("center","4");
         fragmentList=new ArrayList<Fragment>();
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
@@ -91,7 +95,8 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             public void onPageSelected(int position) {
                 if (0 == position) {
 
-                    actionBar.setTitle("首页");;
+                    actionBar.setTitle("首页");
+
                 }
                 if (1 == position) {
 
@@ -116,23 +121,46 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
             }
         });
 
-        tv_my_host.setOnClickListener(new View.OnClickListener() {
+        ll_index.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pag.setCurrentItem(1);
-                tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
-                tv_my_host.setBackgroundColor(Color.GRAY);
+                pag.setCurrentItem(0,false);
+
+                // tv_buy_vegetable.setBackgroundColor(drawingCacheBackgroundColor);
+                //tv_my_host.setBackgroundColor(Color.GRAY);
 
             }
 
         });
 
-        tv_buy_vegetable.setOnClickListener(new View.OnClickListener() {
+        ll_near.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pag.setCurrentItem(0);
-                tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
-                tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+                pag.setCurrentItem(1,false);
+                //tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
+                //tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+
+            }
+
+        });
+
+        ll_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pag.setCurrentItem(2,false);
+                //tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
+                //tv_buy_vegetable.setBackgroundColor(Color.GRAY);
+
+            }
+
+        });
+
+        ll_center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pag.setCurrentItem(3,false);
+                //tv_my_host.setBackgroundColor(drawingCacheBackgroundColor);
+                //tv_buy_vegetable.setBackgroundColor(Color.GRAY);
 
             }
 

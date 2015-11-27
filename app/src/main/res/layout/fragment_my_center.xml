@@ -18,11 +18,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_login"
         android:text="马上登录"
-        />
+        android:visibility="gone" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_personal_setting"
-        android:text="设置" />
+        android:text="设置"
+        android:visibility="gone" />
 </LinearLayout>

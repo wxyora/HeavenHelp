@@ -98,7 +98,7 @@ public class MyCenterFragment extends BaseFragment{
         View activity_login = inflater.inflate(R.layout.fragment_my_center, container, false);
 
         toastUtils = new ToastUtils(getActivity());
-        requestQueue = Volley.newRequestQueue(getActivity());
+        //requestQueue = Volley.newRequestQueue(getActivity());
         //bt_login = (Button)activity_login.findViewById(R.id.bt_login);
         btn_personal_setting = (Button)activity_login.findViewById(R.id.btn_personal_setting);
         tv_login_info = (TextView)activity_login.findViewById(R.id.tv_login_info);
@@ -151,7 +151,7 @@ public class MyCenterFragment extends BaseFragment{
 
     public void initCenterInfo(){
 
-
+        requestQueue = Volley.newRequestQueue(getActivity());
 
         StringRequest findUserByMobile = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.findUserByMobile, new Response.Listener<String>() {
             @Override

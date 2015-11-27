@@ -64,7 +64,7 @@ public class OrderInfoFragment extends BaseFragment {
     }
 
     @Override
-    protected void lazyLoad() {
+    public void lazyLoad() {
 
     }
 

@@ -64,7 +64,7 @@ public class NearInfoFragment extends BaseFragment {
     }
 
     @Override
-    protected void lazyLoad() {
+    public void lazyLoad() {
 
     }
 
