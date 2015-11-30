@@ -94,10 +94,10 @@ public class IndexActivity extends AppCompatActivity implements ProductInfoFragm
                     //fragment1.lazyLoad();
                 }
                 if (1 == position) {
-                    actionBar.setTitle("附近");
+                    actionBar.setTitle("分类");
                 }
                 if (2 == position) {
-                    actionBar.setTitle("订单");
+                    actionBar.setTitle("附近");
                 }
                 if (3 == position) {
                     actionBar.setTitle("个人中心");

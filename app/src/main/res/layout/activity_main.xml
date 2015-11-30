@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="欢迎成为我们的一员"
+            android:text="欢迎成为结伴的一员"
             android:id="@+id/textView3"
             android:textSize="22dp" />
     </LinearLayout>

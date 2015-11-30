@@ -57,7 +57,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="附近"
+                android:text="分类"
                 android:id="@+id/tv_near"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -79,7 +79,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="订单"
+                android:text="发现"
                 android:id="@+id/tv_order"
                 android:layout_weight="1"
                 android:gravity="center"
