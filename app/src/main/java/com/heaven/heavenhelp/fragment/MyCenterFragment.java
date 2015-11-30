@@ -192,11 +192,13 @@ public class MyCenterFragment extends BaseFragment{
                         tv_login_info.setVisibility(View.VISIBLE);
                         btn_login.setVisibility(View.GONE);
                         btn_personal_setting.setVisibility(View.VISIBLE);
+                        btn_public_accompany.setVisibility(View.VISIBLE);
 
                     }else {
                         tv_login_info.setText("您没有登录");
                         tv_login_info.setVisibility(View.VISIBLE);
                         btn_login.setVisibility(View.VISIBLE);
+                        btn_public_accompany.setVisibility(View.GONE);
                         btn_personal_setting.setVisibility(View.GONE);
                     }
                     handler.sendEmptyMessage(1);
