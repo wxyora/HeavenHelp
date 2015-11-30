@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.activity.LoginActivity;
 import com.heaven.heavenhelp.activity.Personal_Setting_Activity;
+import com.heaven.heavenhelp.activity.PublicAccompanyActivity;
 import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.utils.BaseFragment;
 import com.heaven.heavenhelp.utils.Constants;
@@ -60,7 +61,7 @@ public class MyCenterFragment extends BaseFragment{
     private OnFragmentInteractionListener mListener;
     private RequestQueue requestQueue;
     private ToastUtils toastUtils;
-    private Button btn_login,btn_personal_setting;
+    private Button btn_login,btn_personal_setting,btn_public_accompany;
     private TextView tv_login_info;
     Dialog mDialog;
 
@@ -119,6 +120,7 @@ public class MyCenterFragment extends BaseFragment{
         //requestQueue = Volley.newRequestQueue(getActivity());
         //bt_login = (Button)activity_login.findViewById(R.id.bt_login);
         btn_personal_setting = (Button)activity_login.findViewById(R.id.btn_personal_setting);
+        btn_public_accompany = (Button)activity_login.findViewById(R.id.btn_public_accompany);
         tv_login_info = (TextView)activity_login.findViewById(R.id.tv_login_info);
 
         btn_login = (Button)activity_login.findViewById(R.id.btn_login);
@@ -132,6 +134,12 @@ public class MyCenterFragment extends BaseFragment{
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity().getApplicationContext(), Personal_Setting_Activity.class));
+            }
+        });
+        btn_public_accompany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), PublicAccompanyActivity.class));
             }
         });
 
@@ -186,7 +194,8 @@ public class MyCenterFragment extends BaseFragment{
                         btn_personal_setting.setVisibility(View.VISIBLE);
 
                     }else {
-                        tv_login_info.setVisibility(View.GONE);
+                        tv_login_info.setText("您没有登录");
+                        tv_login_info.setVisibility(View.VISIBLE);
                         btn_login.setVisibility(View.VISIBLE);
                         btn_personal_setting.setVisibility(View.GONE);
                     }

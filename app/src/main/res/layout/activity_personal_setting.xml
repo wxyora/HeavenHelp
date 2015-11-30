@@ -9,20 +9,6 @@
     tools:context="com.heaven.heavenhelp.activity.Personal_Setting_Activity">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="退出登录  ->"
-            android:id="@+id/btn_login_out"
-            android:background="#ff0000"
-            android:layout_marginTop="11dp" />
-    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -37,5 +23,21 @@
             android:text="此区域为应用选项设置"
             android:id="@+id/textView2" />
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="退出登录"
+            android:id="@+id/btn_login_out"
+            android:background="#ff0000" />
+    </LinearLayout>
+
 
 </LinearLayout>

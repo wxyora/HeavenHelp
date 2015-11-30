@@ -22,18 +22,23 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="您没有登录"
                 android:id="@+id/tv_login_info"
-                android:layout_weight="4" />
+                android:layout_weight="4"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                android:textSize="16dp" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
                 android:id="@+id/btn_login"
                 android:text="马上登录"
+                android:background="@drawable/btn_style"
+                android:visibility="gone"
+                android:layout_marginRight="12dp"
                 android:layout_weight="1"
-                android:background="#8be869"
-                android:visibility="gone" />
+                android:layout_marginLeft="12dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -44,12 +49,22 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_personal_setting"
-                android:text="设置                    ->"
-                android:background="#dacb46"
+                android:layout_height="30dp"
+                android:id="@+id/btn_public_accompany"
+                android:text="发布结伴"
+                android:background="@drawable/btn_style"
                 android:layout_weight="1"
-                android:visibility="gone" />
+                android:visibility="visible"
+                android:layout_marginBottom="22dp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/btn_personal_setting"
+                android:text="设置"
+                android:background="@drawable/btn_style"
+                android:layout_weight="1"
+                android:visibility="visible" />
 
             <LinearLayout
                 android:orientation="vertical"

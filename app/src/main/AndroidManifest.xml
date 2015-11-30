@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.GuideActivity"
-            android:label="性价比">
+            android:label="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,24 +33,25 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.RegisterActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_regist" />
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
-
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".activity.FindPasswordActivity"
-            android:label="@string/title_activity_find_password"></activity>
-
-        <activity android:name=".activity.IndexActivity"
-            android:launchMode="singleTask"
-            ></activity>
+            android:label="@string/title_activity_find_password" />
+        <activity
+            android:name=".activity.IndexActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.Personal_Setting_Activity"
-            android:label="设置选项">
+            android:label="设置选项"></activity>
+        <activity
+            android:name=".activity.PublicAccompanyActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:label="@string/title_activity_public_accompany">
+
         </activity>
-
-
     </application>
 
 </manifest>

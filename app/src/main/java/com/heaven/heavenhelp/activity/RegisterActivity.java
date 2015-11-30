@@ -3,6 +3,7 @@ package com.heaven.heavenhelp.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,12 +48,14 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
     EventHandler eventHandler;
     RequestQueue requestQueue;
     ToastUtils toastUtils;
-
+    ActionBar actionbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
         id_mobile_number = (EditText) findViewById(R.id.id_mobile_number);
         id_gotted_code = (EditText) findViewById(R.id.id_gotted_code);
         id_password = (EditText) findViewById(R.id.id_password);
@@ -162,7 +165,7 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -176,6 +179,8 @@ public class RegisterActivity extends ActionBarActivity implements View.OnClickL
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else{
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

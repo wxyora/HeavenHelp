@@ -4,7 +4,7 @@
     <!--选中颜色-->
     <item android:state_selected="true">
         <shape>
-            <gradient android:angle="270" android:endColor="#949494" android:startColor="#949494" />
+            <gradient android:angle="270" android:endColor="#FFA500" android:startColor="#FFA500" />
            <!-- <size android:width="320dp" android:height="60dp" />-->
             <corners android:radius="4dp" />
         </shape>
@@ -13,7 +13,7 @@
     <!--按压颜色-->
     <item android:state_pressed="true">
         <shape>
-            <gradient android:angle="270" android:endColor="#949494" android:startColor="#949494" />
+            <gradient android:angle="270" android:endColor="#FFA500" android:startColor="#FFA500" />
             <!--<size android:width="320dp" android:height="60dp" />-->
             <corners android:radius="4dp" />
         </shape>
@@ -22,7 +22,7 @@
     <!--默认颜色-->
     <item>
         <shape>
-            <gradient android:angle="270" android:endColor="#dacb46" android:startColor="#dacb46" />
+            <gradient android:angle="270" android:endColor="#949494" android:startColor="#949494" />
            <!-- <size android:width="320dp" android:height="60dp" />-->
             <corners android:radius="4dp" />
         </shape>
