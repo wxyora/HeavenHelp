@@ -13,6 +13,8 @@ public class Constants {
 
     public static final String loginValidate = "celechem/loginValidate.action";
 
+    public static final String uploadImgInfo = "celechem/uploadImgInfo.action";
+
     public static final String register = "celechem/register.action";
 
     public static final String findUserByMobile = "celechem/findUserByMobile.action";

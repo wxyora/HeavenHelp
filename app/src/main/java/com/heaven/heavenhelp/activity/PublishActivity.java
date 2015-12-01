@@ -31,14 +31,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
+import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.util.Bimp;
 import com.heaven.heavenhelp.util.FileUtils;
 import com.heaven.heavenhelp.util.ImageItem;
+import com.heaven.heavenhelp.util.ImageUtil;
 import com.heaven.heavenhelp.util.PublicWay;
 import com.heaven.heavenhelp.util.Res;
+import com.heaven.heavenhelp.utils.Constants;
+import com.heaven.heavenhelp.utils.SharePrefUtil;
+import com.heaven.heavenhelp.utils.StringRequestUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PublishActivity extends Activity {
@@ -49,6 +68,8 @@ public class PublishActivity extends Activity {
 	private PopupWindow pop = null;
 	private LinearLayout ll_popup;
 	public static Bitmap bimap ;
+	private TextView activity_selectimg_send;
+	private RequestQueue requestQueue;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,8 +78,10 @@ public class PublishActivity extends Activity {
 				getResources(),
 				R.drawable.icon_addpic_unfocused);
 		PublicWay.activityList.add(this);
+		requestQueue = Volley.newRequestQueue(this);
 		//获取外部布局
 		parentView = getLayoutInflater().inflate(R.layout.activity_selectimg, null);
+		activity_selectimg_send = (TextView)parentView.findViewById(R.id.activity_selectimg_send);
 		setContentView(parentView);
 		Init();
 	}
@@ -79,6 +102,7 @@ public class PublishActivity extends Activity {
 		pop.setContentView(view);
 		
 		RelativeLayout parent = (RelativeLayout) view.findViewById(R.id.parent);
+
 		Button bt1 = (Button) view
 				.findViewById(R.id.item_popupwindows_camera);
 		Button bt2 = (Button) view
@@ -114,6 +138,51 @@ public class PublishActivity extends Activity {
 			public void onClick(View v) {
 				pop.dismiss();
 				ll_popup.clearAnimation();
+			}
+		});
+		activity_selectimg_send.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				try {
+					if(Bimp.tempSelectBitmap.size()>0){
+
+						for(int i =0;i<Bimp.tempSelectBitmap.size();i++){
+							final String photo  = ImageUtil.regImg(Bimp.tempSelectBitmap.get(i).getBitmap());
+							final String imgName  = Bimp.tempSelectBitmap.get(i).getImageId();
+							StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.uploadImgInfo, new Response.Listener<String>() {
+								@Override
+								public void onResponse(String s) {
+									try {
+										//JSONObject jsonObject = new JSONObject(s);
+										Toast.makeText(PublishActivity.this,"上传成功!",Toast.LENGTH_SHORT).show();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}, new Response.ErrorListener() {
+								@Override
+								public void onErrorResponse(VolleyError volleyError) {
+									Toast.makeText(PublishActivity.this,"网络异常，请稍后再试。",Toast.LENGTH_SHORT).show();
+								}
+							}) {
+								@Override
+								protected Map<String, String> getParams() throws AuthFailureError {
+									Map<String, String> map = new HashMap<String, String>();
+									map.put("photo",photo);
+									map.put("imgName",imgName);
+									return map;
+								}
+							};
+							requestQueue.add(sr);
+
+						}
+
+
+					}
+				}catch (Exception e){
+					e.getStackTrace();
+				}
+
 			}
 		});
 		
