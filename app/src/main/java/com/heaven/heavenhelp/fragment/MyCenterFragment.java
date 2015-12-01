@@ -25,8 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.heaven.heavenhelp.R;
 import com.heaven.heavenhelp.activity.LoginActivity;
+import com.heaven.heavenhelp.activity.PublishActivity;
 import com.heaven.heavenhelp.activity.Personal_Setting_Activity;
-import com.heaven.heavenhelp.activity.PublicAccompanyActivity;
 import com.heaven.heavenhelp.model.UserInfo;
 import com.heaven.heavenhelp.utils.BaseFragment;
 import com.heaven.heavenhelp.utils.Constants;
@@ -139,7 +139,7 @@ public class MyCenterFragment extends BaseFragment{
         btn_public_accompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity().getApplicationContext(), PublicAccompanyActivity.class));
+                startActivity(new Intent(getActivity().getApplicationContext(), PublishActivity.class));
             }
         });
 

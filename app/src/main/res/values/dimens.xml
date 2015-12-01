@@ -8,4 +8,5 @@
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="ui_10_dip">10dip</dimen>
 </resources>
