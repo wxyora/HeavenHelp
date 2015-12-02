@@ -109,14 +109,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.bt_login_submit:
 
-                SharedPreferences loginInfoShare =
-                        getSharedPreferences("loginInfo", MODE_PRIVATE);
-                SharedPreferences.Editor editor = loginInfoShare.edit();
-                String loginName = id_login_mobile.getText().toString();
-                String loginPwd = id_login_password.getText().toString();
-                //boolean checked = remember_user_info.isChecked();
-
-
                 if(TextUtils.isEmpty(id_login_mobile.getText().toString())){
                     toastUtils.showToastShort("手机号码不能为空");
                 }else{

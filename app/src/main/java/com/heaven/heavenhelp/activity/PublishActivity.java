@@ -193,17 +193,15 @@ public class PublishActivity extends Activity {
 						for (int i = 0; i < Bimp.tempSelectBitmap.size(); i++) {
 							final String photo = ImageUtil.regImg(Bimp.tempSelectBitmap.get(i).getBitmap());
 							final String imgName = Bimp.tempSelectBitmap.get(i).getImageId();
-							final int imgCount = Bimp.tempSelectBitmap.size();
-							final int imgNum= i+1;
+							final String imgCount = String.valueOf(Bimp.tempSelectBitmap.size());
+							final String imgNum= String.valueOf(i+1);
 							StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host + Constants.uploadImgInfo, new Response.Listener<String>() {
 								@Override
 								public void onResponse(String s) {
 									try {
-
-
-										//JSONObject jsonObject = new JSONObject(s);
-
-										if(imgCount == imgNum){
+										JSONObject jsonObject = new JSONObject(s);
+										String result = jsonObject.getString("result");
+										if(result.equals(imgCount)){
 											toastUtils = new ToastUtils(PublishActivity.this);
 											toastUtils.showToastShort("上传照片完成.");
 											for(int i=0;i<PublicWay.activityList.size();i++){
@@ -211,6 +209,7 @@ public class PublishActivity extends Activity {
 													PublicWay.activityList.get(i).finish();
 												}
 											}
+											//startActivity(new Intent(PublishActivity.this,IndexActivity.class));
 											System.exit(0);
 										}
 
@@ -221,17 +220,17 @@ public class PublishActivity extends Activity {
 							}, new Response.ErrorListener() {
 								@Override
 								public void onErrorResponse(VolleyError volleyError) {
-									mDialog.dismiss();
+									//mDialog.dismiss();
 									Toast.makeText(PublishActivity.this, "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
 								}
 							}) {
 								@Override
 								protected Map<String, String> getParams() throws AuthFailureError {
 									Map<String, String> map = new HashMap<String, String>();
-									map.put("mobile", mobile);
+									map.put("mobile", SharePrefUtil.getUserInfo(getApplicationContext()).getMobile());
 									map.put("photo", photo);
 									map.put("imgName", imgName);
-									map.put("imgCount", String.valueOf(imgNum));
+									map.put("imgCount", imgNum);
 									return map;
 								}
 							};
