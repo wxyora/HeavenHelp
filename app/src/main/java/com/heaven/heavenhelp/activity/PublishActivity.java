@@ -2,8 +2,10 @@ package com.heaven.heavenhelp.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -50,8 +52,10 @@ import com.heaven.heavenhelp.util.ImageUtil;
 import com.heaven.heavenhelp.util.PublicWay;
 import com.heaven.heavenhelp.util.Res;
 import com.heaven.heavenhelp.utils.Constants;
+import com.heaven.heavenhelp.utils.LoadProcessDialog;
 import com.heaven.heavenhelp.utils.SharePrefUtil;
 import com.heaven.heavenhelp.utils.StringRequestUtil;
+import com.heaven.heavenhelp.utils.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,6 +74,21 @@ public class PublishActivity extends Activity {
 	public static Bitmap bimap ;
 	private TextView activity_selectimg_send;
 	private RequestQueue requestQueue;
+	private Dialog mDialog;
+	private ToastUtils toastUtils;
+
+	Handler handler2  = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if(msg.what==0){
+				mDialog = LoadProcessDialog.showRoundProcessDialog(PublishActivity.this, R.layout.loading_process_dialog_color);
+			}else if(msg.what==1){
+				mDialog.dismiss();
+			}
+
+		}
+	};
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -140,53 +159,8 @@ public class PublishActivity extends Activity {
 				ll_popup.clearAnimation();
 			}
 		});
-		activity_selectimg_send.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				try {
-					if(Bimp.tempSelectBitmap.size()>0){
 
-						for(int i =0;i<Bimp.tempSelectBitmap.size();i++){
-							final String photo  = ImageUtil.regImg(Bimp.tempSelectBitmap.get(i).getBitmap());
-							final String imgName  = Bimp.tempSelectBitmap.get(i).getImageId();
-							StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host+Constants.uploadImgInfo, new Response.Listener<String>() {
-								@Override
-								public void onResponse(String s) {
-									try {
-										//JSONObject jsonObject = new JSONObject(s);
-										Toast.makeText(PublishActivity.this,"上传成功!",Toast.LENGTH_SHORT).show();
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								}
-							}, new Response.ErrorListener() {
-								@Override
-								public void onErrorResponse(VolleyError volleyError) {
-									Toast.makeText(PublishActivity.this,"网络异常，请稍后再试。",Toast.LENGTH_SHORT).show();
-								}
-							}) {
-								@Override
-								protected Map<String, String> getParams() throws AuthFailureError {
-									Map<String, String> map = new HashMap<String, String>();
-									map.put("photo",photo);
-									map.put("imgName",imgName);
-									return map;
-								}
-							};
-							requestQueue.add(sr);
-
-						}
-
-
-					}
-				}catch (Exception e){
-					e.getStackTrace();
-				}
-
-			}
-		});
-		
-		noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);	
+		noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
 		noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		adapter = new GridAdapter(this);
 		adapter.update();
@@ -194,10 +168,10 @@ public class PublishActivity extends Activity {
 		noScrollgridview.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+									long arg3) {
 				if (arg2 == Bimp.tempSelectBitmap.size()) {
 					Log.i("ddddddd", "----------");
-					ll_popup.startAnimation(AnimationUtils.loadAnimation(PublishActivity.this,R.anim.activity_translate_in));
+					ll_popup.startAnimation(AnimationUtils.loadAnimation(PublishActivity.this, R.anim.activity_translate_in));
 					pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
 				} else {
 					Intent intent = new Intent(PublishActivity.this,
@@ -208,6 +182,73 @@ public class PublishActivity extends Activity {
 				}
 			}
 		});
+		activity_selectimg_send.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				try {
+					if (Bimp.tempSelectBitmap.size() > 0) {
+						SharedPreferences sharedPreferences =
+								getSharedPreferences("loginInfo", MODE_PRIVATE);
+						final String mobile = sharedPreferences.getString("mobile",null);
+						for (int i = 0; i < Bimp.tempSelectBitmap.size(); i++) {
+							final String photo = ImageUtil.regImg(Bimp.tempSelectBitmap.get(i).getBitmap());
+							final String imgName = Bimp.tempSelectBitmap.get(i).getImageId();
+							final int imgCount = Bimp.tempSelectBitmap.size();
+							final int imgNum= i+1;
+							StringRequest sr = new StringRequestUtil(Request.Method.POST, Constants.host + Constants.uploadImgInfo, new Response.Listener<String>() {
+								@Override
+								public void onResponse(String s) {
+									try {
+
+
+										//JSONObject jsonObject = new JSONObject(s);
+
+										if(imgCount == imgNum){
+											toastUtils = new ToastUtils(PublishActivity.this);
+											toastUtils.showToastShort("上传照片完成.");
+											for(int i=0;i<PublicWay.activityList.size();i++){
+												if (null != PublicWay.activityList.get(i)) {
+													PublicWay.activityList.get(i).finish();
+												}
+											}
+											System.exit(0);
+										}
+
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}, new Response.ErrorListener() {
+								@Override
+								public void onErrorResponse(VolleyError volleyError) {
+									mDialog.dismiss();
+									Toast.makeText(PublishActivity.this, "网络异常，请稍后再试。", Toast.LENGTH_SHORT).show();
+								}
+							}) {
+								@Override
+								protected Map<String, String> getParams() throws AuthFailureError {
+									Map<String, String> map = new HashMap<String, String>();
+									map.put("mobile", mobile);
+									map.put("photo", photo);
+									map.put("imgName", imgName);
+									map.put("imgCount", String.valueOf(imgNum));
+									return map;
+								}
+							};
+							requestQueue.add(sr);
+
+						}
+
+
+					}
+				} catch (Exception e) {
+					e.getStackTrace();
+				}
+
+			}
+		});
+		
+
 
 	}
 
