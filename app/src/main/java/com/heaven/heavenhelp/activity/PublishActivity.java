@@ -15,10 +15,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -64,7 +67,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class PublishActivity extends Activity {
+public class PublishActivity extends ActionBarActivity {
 
 	private GridView noScrollgridview;
 	private GridAdapter adapter;
@@ -76,6 +79,7 @@ public class PublishActivity extends Activity {
 	private RequestQueue requestQueue;
 	private Dialog mDialog;
 	private ToastUtils toastUtils;
+	ActionBar actionbar;
 
 	Handler handler2  = new Handler() {
 		@Override
@@ -103,6 +107,8 @@ public class PublishActivity extends Activity {
 		activity_selectimg_send = (TextView)parentView.findViewById(R.id.activity_selectimg_send);
 		setContentView(parentView);
 		Init();
+		actionbar = getSupportActionBar();
+		actionbar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void Init() {
@@ -407,6 +413,23 @@ public class PublishActivity extends Activity {
 			System.exit(0);
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+
+		//noinspection SimplifiableIfStatement
+		if (id == R.id.action_settings) {
+			return true;
+		}else{
+			finish();
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 }
