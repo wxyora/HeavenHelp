@@ -19,15 +19,16 @@
 
         <TextView
             android:id="@+id/activity_selectimg_send"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
-            android:gravity="center"
             android:text="发布"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:background="@drawable/editsharp"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:gravity="center_vertical|center" />
     </RelativeLayout>
 
     <LinearLayout
