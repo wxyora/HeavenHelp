@@ -106,6 +106,7 @@ public class PublishActivity extends ActionBarActivity {
 		parentView = getLayoutInflater().inflate(R.layout.activity_selectimg, null);
 		activity_selectimg_send = (TextView)parentView.findViewById(R.id.activity_selectimg_send);
 		setContentView(parentView);
+
 		Init();
 		actionbar = getSupportActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(true);
@@ -157,6 +158,7 @@ public class PublishActivity extends ActionBarActivity {
 				overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
 				pop.dismiss();
 				ll_popup.clearAnimation();
+				finish();
 			}
 		});
 		bt3.setOnClickListener(new OnClickListener() {
@@ -210,13 +212,14 @@ public class PublishActivity extends ActionBarActivity {
 										if(result.equals(imgCount)){
 											toastUtils = new ToastUtils(PublishActivity.this);
 											toastUtils.showToastShort("上传照片完成.");
-											for(int i=0;i<PublicWay.activityList.size();i++){
+											/*for(int i=0;i<PublicWay.activityList.size();i++){
 												if (null != PublicWay.activityList.get(i)) {
 													PublicWay.activityList.get(i).finish();
 												}
-											}
-											//startActivity(new Intent(PublishActivity.this,IndexActivity.class));
-											System.exit(0);
+											}*/
+											Bimp.tempSelectBitmap.clear();
+											startActivity(new Intent(PublishActivity.this,IndexActivity.class));
+											//System.exit(0);
 										}
 
 									} catch (Exception e) {
@@ -426,6 +429,7 @@ public class PublishActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		}else{
+			Bimp.tempSelectBitmap.clear();
 			finish();
 		}
 
